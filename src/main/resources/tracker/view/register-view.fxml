@@ -21,25 +21,48 @@
     </padding>
 
     <!-- Register Title -->
-    <VBox maxWidth="350" alignment="CENTER" style="-fx-padding: 0 0 40 0;">
+    <VBox maxWidth="450" alignment="CENTER" style="-fx-padding: 0 0 40 0;">
         <Label text="REGISTER"
                style="-fx-font-size: 42px; -fx-font-weight: bold; -fx-text-fill: #0077b6;"
                maxWidth="350"
                alignment="CENTER"/>
     </VBox>
 
-    <!-- User Section -->
-    <HBox spacing="20" alignment="CENTER_LEFT" maxWidth="350" prefHeight="40">
-        <Label text="User" style="-fx-font-size: 14px; -fx-text-fill: #333333;" prefWidth="80"/>
-        <TextField fx:id="userField" prefColumnCount="20" promptText="Enter username"
+    <!-- Email Section -->
+    <HBox spacing="20" alignment="CENTER_LEFT" maxWidth="450" prefHeight="40">
+        <Label text="Email" style="-fx-font-size: 14px; -fx-text-fill: #333333;" prefWidth="140"/>
+        <TextField fx:id="emailField" prefColumnCount="20" promptText="Enter email"
+                   style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: #0077b6;
+                   -fx-border-width: 1.5; -fx-padding: 6 10 6 10;"/>
+    </HBox>
+
+    <!-- First Name Section -->
+    <HBox spacing="20" alignment="CENTER_LEFT" maxWidth="450" prefHeight="40">
+        <Label text="First Name" style="-fx-font-size: 14px; -fx-text-fill: #333333;" prefWidth="140"/>
+        <TextField fx:id="firstNameField" prefColumnCount="20" promptText="Enter first name"
+                   style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: #0077b6;
+                   -fx-border-width: 1.5; -fx-padding: 6 10 6 10;"/>
+    </HBox>
+
+    <!-- Last name section-->
+    <HBox spacing="20" alignment="CENTER_LEFT" maxWidth="450" prefHeight="40">
+        <Label text="Last name" style="-fx-font-size: 14px; -fx-text-fill: #333333;" prefWidth="140"/>
+        <TextField fx:id="lastNameField" prefColumnCount="20" promptText="Enter last name"
                    style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: #0077b6;
                    -fx-border-width: 1.5; -fx-padding: 6 10 6 10;"/>
     </HBox>
 
     <!-- Password Section -->
-    <HBox spacing="20" alignment="CENTER_LEFT" maxWidth="350" prefHeight="40">
-        <Label text="Password" style="-fx-font-size: 14px; -fx-text-fill: #333333;" prefWidth="80"/>
+    <HBox spacing="20" alignment="CENTER_LEFT" maxWidth="450" prefHeight="40">
+        <Label text="Password" style="-fx-font-size: 14px; -fx-text-fill: #333333;" prefWidth="140"/>
         <PasswordField fx:id="passwordField" prefColumnCount="20" promptText="Enter password"
+                       style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: #0077b6;
+                       -fx-border-width: 1.5; -fx-padding: 6 10 6 10;"/>
+    </HBox>
+    <!-- Confirm Password Section -->
+    <HBox spacing="20" alignment="CENTER_LEFT" maxWidth="450" prefHeight="40">
+        <Label text="Confirm Password" style="-fx-font-size: 14px; -fx-text-fill: #333333;" prefWidth="140"/>
+        <PasswordField fx:id="confirmPasswordField" prefColumnCount="20" promptText="Confirm password"
                        style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: #0077b6;
                        -fx-border-width: 1.5; -fx-padding: 6 10 6 10;"/>
     </HBox>

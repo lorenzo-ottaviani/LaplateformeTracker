@@ -14,10 +14,19 @@ import java.io.IOException;
 public class RegisterController {
 
     @FXML
-    private TextField userField;
+    private TextField emailField;
+
+    @FXML
+    private TextField firstNameField;
+
+    @FXML
+    private TextField lastNameField;
 
     @FXML
     private PasswordField passwordField;
+
+    @FXML
+    private PasswordField confirmPasswordField;
 
     @FXML
     protected void onLoginButtonClick() {
@@ -27,7 +36,7 @@ public class RegisterController {
             Parent loginRoot = fxmlLoader.load();
 
             // Get the current stage from a control (ex: backToLoginButton)
-            Stage stage = (Stage) userField.getScene().getWindow();
+            Stage stage = (Stage) emailField.getScene().getWindow();
 
             // Create a new scene with the Login view
             Scene scene = new Scene(loginRoot, 800, 600);
@@ -43,8 +52,11 @@ public class RegisterController {
 
     @FXML
     protected void onRegisterButtonClick() {
-        String username = userField.getText();
+        String email = emailField.getText();
+        String firstName = firstNameField.getText();
+        String lastName = lastNameField.getText();
         String password = passwordField.getText();
+        String confirmPassword = confirmPasswordField.getText();
 
         /* Ici, tu appelles ta méthode de vérification en base de données
         boolean isValidUser = checkCredentials(username, password);
