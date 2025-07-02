@@ -1,9 +1,15 @@
 package tracker.view;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class LoginController {
 
@@ -29,5 +35,25 @@ public class LoginController {
     }
 
     @FXML
-    protected void onRegisterButtonClick() {}
+    protected void onRegisterButtonClick() {
+        try {
+            // Load the FXML file for the Register view
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("register-view.fxml"));
+            Parent registerRoot = fxmlLoader.load();
+
+            // Get the current stage from a control (e.g., userField)
+            Stage stage = (Stage) userField.getScene().getWindow();
+
+            // Create a new scene with the Register view
+            Scene scene = new Scene(registerRoot, 800, 600);
+
+            // Replace the current scene with the new one
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 }
