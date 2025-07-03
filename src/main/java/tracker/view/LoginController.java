@@ -32,6 +32,9 @@ public class LoginController {
         } else {
             welcomeText.setText("Invalid username or password.");
         } */
+
+        // Appel provisoire direct de la "Students Display View"
+        switchToStudentsDisplayView();
     }
 
     @FXML
@@ -55,5 +58,26 @@ public class LoginController {
             e.printStackTrace();
         }
 
+    }
+
+    protected void switchToStudentsDisplayView() {
+        try {
+            // Load the FXML file for the Register view
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("students-display-view.fxml"));
+            Parent studentsDisplayRoot = fxmlLoader.load();
+
+            // Get the current stage from a control (e.g., userField)
+            Stage stage = (Stage) userField.getScene().getWindow();
+
+            // Create a new scene with the Students Display view
+            Scene scene = new Scene(studentsDisplayRoot, 800, 600);
+
+            // Replace the current scene with the new one
+            stage.setScene(scene);
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
