@@ -19,14 +19,29 @@ import java.util.ResourceBundle;
 
 public class StudentsDisplayController implements Initializable {
 
-    @FXML private TableView<Student> studentTable;
-    @FXML private TableColumn<Student, String> colFirstName;
-    @FXML private TableColumn<Student, String> colLastName;
-    @FXML private TableColumn<Student, LocalDate> colBirthDate;
-    @FXML private TableColumn<Student, String> colStudentNumber;
-    @FXML private TableColumn<Student, String> colEducationLevel;
-    @FXML private TableColumn<Student, Double> colAverageGrade;
-    @FXML private Pagination pagination;
+    @FXML
+    private TableView<Student> studentTable;
+
+    @FXML
+    private TableColumn<Student, String> colFirstName;
+
+    @FXML
+    private TableColumn<Student, String> colLastName;
+
+    @FXML
+    private TableColumn<Student, LocalDate> colBirthDate;
+
+    @FXML
+    private TableColumn<Student, String> colStudentNumber;
+
+    @FXML
+    private TableColumn<Student, String> colEducationLevel;
+
+    @FXML
+    private TableColumn<Student, Double> colAverageGrade;
+
+    @FXML
+    private Pagination pagination;
 
     private final static int ROWS_PER_PAGE = 10;
     private ObservableList<Student> allStudents;
@@ -67,10 +82,18 @@ public class StudentsDisplayController implements Initializable {
     @FXML
     protected void onLogoutButtonClick() {
         try {
+            // Load the FXML file for the Register view
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("login-view.fxml"));
             Parent loginRoot = fxmlLoader.load();
+
+            // Get the current stage from a control (e.g., userField)
             Stage stage = (Stage) studentTable.getScene().getWindow();
-            stage.setScene(new Scene(loginRoot, 800, 600));
+
+            // Create a new scene with the Register view
+            Scene scene = new Scene(loginRoot, 800, 600);
+
+            // Replace the current scene with the new one
+            stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

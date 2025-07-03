@@ -41,12 +41,11 @@
                 <columns>
                     <TableColumn fx:id="colFirstName" text="First Name" prefWidth="100"/>
                     <TableColumn fx:id="colLastName" text="Last Name" prefWidth="100"/>
-                    <TableColumn fx:id="colBirthDate" text="Date de Naissance" prefWidth="150"/>
-                    <TableColumn fx:id="colStudentNumber" text="Numéro Étudiant" prefWidth="120"/>
-                    <TableColumn fx:id="colEducationLevel" text="Niveau" prefWidth="100"/>
-                    <TableColumn fx:id="colAverageGrade" text="Moyenne" prefWidth="80"/>
+                    <TableColumn fx:id="colBirthDate" text="Birth Date" prefWidth="150"/>
+                    <TableColumn fx:id="colStudentNumber" text="Student Number" prefWidth="120"/>
+                    <TableColumn fx:id="colEducationLevel" text="Education Level" prefWidth="100"/>
+                    <TableColumn fx:id="colAverageGrade" text="Average Grade" prefWidth="80"/>
                 </columns>
-                <!-- Zébrage possible via CSS -->
                 <style>
                     -fx-control-inner-background-alt: #e9f5fb;
                 </style>

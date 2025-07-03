@@ -17,12 +17,6 @@ public class RegisterController {
     private TextField emailField;
 
     @FXML
-    private TextField firstNameField;
-
-    @FXML
-    private TextField lastNameField;
-
-    @FXML
     private PasswordField passwordField;
 
     @FXML
@@ -53,8 +47,6 @@ public class RegisterController {
     @FXML
     protected void onRegisterButtonClick() {
         String email = emailField.getText();
-        String firstName = firstNameField.getText();
-        String lastName = lastNameField.getText();
         String password = passwordField.getText();
         String confirmPassword = confirmPasswordField.getText();
 
