@@ -11,28 +11,20 @@ public class IDGenerator {
          */
         String id = "";
         for (int i = 0; i <= 7; i++) { //We do an 8 caracters string.
-                Random rand = new Random();
-                int randomNumLetter = rand.nextInt(2) + 1; //Will decide if it will be a number or a MAJ
-                    if (randomNumLetter == 1) { //Generate an ASCII Number
-                        int asciiNumber = rand.nextInt(57 - 48 + 1) + 48;
-                        char numtoascii = (char) asciiNumber;
-                        id += numtoascii;
-                    }
-
-                    if (randomNumLetter == 2) { //Generate an ASCII letter
-                        int asciiChar = rand.nextInt( 90 - 65 + 1) + 65;
-                        char numtoascii = (char) asciiChar;
-                        id += numtoascii;
-                    }
+            Random rand = new Random();
+            int randomNumLetter = rand.nextInt(2) + 1; //Will decide if it will be a number or a MAJ
+            if (randomNumLetter == 1) { //Generate an ASCII Number
+                int asciiNumber = rand.nextInt(57 - 48 + 1) + 48;
+                char numtoascii = (char) asciiNumber;
+                id += numtoascii;
             }
-        System.out.println(id);
-        return id;
-    }
 
-    public static void main(String[] args) {
-        IDGenerator idGen = new IDGenerator();
-        idGen.generation_id();
-        idGen.generation_id();
-        idGen.generation_id();
+            if (randomNumLetter == 2) { //Generate an ASCII letter
+                int asciiChar = rand.nextInt(90 - 65 + 1) + 65;
+                char numtoascii = (char) asciiChar;
+                id += numtoascii;
+            }
+        }
+        return id;
     }
 }
