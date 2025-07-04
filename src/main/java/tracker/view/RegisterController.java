@@ -50,6 +50,10 @@ public class RegisterController {
         String password = passwordField.getText();
         String confirmPassword = confirmPasswordField.getText();
 
+        System.out.println("My email: " + email);
+        System.out.println("My password (first entry): " + password);
+        System.out.println("My password (confirmation): " + confirmPassword);
+
         /* Ici, tu appelles ta méthode de vérification en base de données
         boolean isValidUser = checkCredentials(username, password);
 

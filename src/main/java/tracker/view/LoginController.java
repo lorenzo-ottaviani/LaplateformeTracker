@@ -24,6 +24,9 @@ public class LoginController {
         String username = userField.getText();
         String password = passwordField.getText();
 
+        System.out.println("My email: " + username);
+        System.out.println("My password: " + password);
+
         /* Ici, tu appelles ta méthode de vérification en base de données
         boolean isValidUser = checkCredentials(username, password);
 
