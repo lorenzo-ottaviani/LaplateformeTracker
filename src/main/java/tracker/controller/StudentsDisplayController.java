@@ -83,6 +83,12 @@ public class StudentsDisplayController implements Initializable {
                         "S015", "Master", 15.7)
         );
 
+        // Set row height to 40 pixels
+        studentTable.setRowFactory(tv -> {
+            TableRow<Student> row = new TableRow<>();
+            row.setPrefHeight(40);
+            return row;
+        });
 
         // Initialize table columns
         colFirstName.setCellValueFactory(cell -> cell.getValue().firstNameProperty());
