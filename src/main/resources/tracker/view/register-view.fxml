@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<FlowPane xmlns:fx="http://javafx.com/fxml" fx:controller="tracker.view.RegisterController"
+<FlowPane xmlns:fx="http://javafx.com/fxml" fx:controller="tracker.controller.RegisterController"
           orientation="VERTICAL"
           alignment="CENTER"
           vgap="20"
