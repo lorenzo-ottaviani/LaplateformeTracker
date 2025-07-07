@@ -58,6 +58,7 @@ public class DatabaseConnection {
     public static Connection connect() {
         String defaultUrl = String.format("jdbc:postgresql://%s:%d/postgres", DB_HOST, DB_PORT);
 
+        // Connect to the default database to check if the target database needs to be created
         try (Connection conn = DriverManager.getConnection(defaultUrl, DB_USER, DB_PASS)) {
             System.out.println("✅ Connected to PostgreSQL server (default database).");
 
