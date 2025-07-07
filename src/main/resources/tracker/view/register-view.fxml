@@ -51,6 +51,16 @@
                        -fx-border-width: 1.5; -fx-padding: 6 10 6 10;"/>
     </HBox>
 
+    <!-- Confirm Password Message failed -->
+    <VBox maxWidth="450" alignment="CENTER" style="-fx-padding: 0 0 40 0;">
+        <Label fx:id="passwordMismatchLabel" text="The passwords are not the same.."
+               visible="false"
+               style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #e63946;"
+               maxWidth="350"
+               alignment="CENTER"/>
+    </VBox>
+
+
     <!-- Buttons Section -->
     <HBox spacing="30" alignment="CENTER" maxWidth="350" style="-fx-padding: 20 0 0 0;">
         <Button text="Login"
@@ -66,4 +76,3 @@
     </HBox>
 
 </FlowPane>
-
