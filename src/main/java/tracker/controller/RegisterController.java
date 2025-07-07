@@ -23,6 +23,12 @@ public class RegisterController {
     private PasswordField confirmPasswordField;
 
     @FXML
+    private TextField confirmPasswordFailed;
+
+    @FXML
+    private Label registrationErrorLabel;
+
+    @FXML
     protected void onLoginButtonClick() {
         try {
             // Load the FXML file for the Login view
@@ -54,13 +60,40 @@ public class RegisterController {
         System.out.println("My password (first entry): " + password);
         System.out.println("My password (confirmation): " + confirmPassword);
 
-        /* Ici, tu appelles ta méthode de vérification en base de données
-        boolean isValidUser = checkCredentials(username, password);
+        // Email validation: must contain '@' and a '.' after the '@' part
+        if (email == null || !email.matches("^.+@.+\\..+$")) {
+            registrationErrorLabel.setText("Invalid email address.");
+            registrationErrorLabel.setVisible(true);
+            return; // Stop here if email is invalid
+        }
 
-        if (isValidUser) {
-            welcomeText.setText("You have successfully logged in!");
+        // Password strength validation
+        if (!isValidPassword(password)) {
+            registrationErrorLabel.setText("Password must be at least 12 characters and include uppercase, lowercase, " +
+                    "digit, and special character.");
+            registrationErrorLabel.setVisible(true);
+            return;
+        }
+
+        // Password matching check
+        if (!password.equals(confirmPassword)) {
+            registrationErrorLabel.setText("Passwords do not match.");
+            registrationErrorLabel.setVisible(true);
         } else {
-            welcomeText.setText("Invalid username or password.");
-        } */
+            registrationErrorLabel.setVisible(false);
+            System.out.println("Email and passwords are valid! You can register the user.");
+        }
     }
+
+    private boolean isValidPassword(String password) {
+        if (password == null || password.length() < 12) return false;
+
+        boolean hasUpper = password.matches(".*[A-Z].*");
+        boolean hasLower = password.matches(".*[a-z].*");
+        boolean hasDigit = password.matches(".*\\d.*");
+        boolean hasSpecial = password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?].*");
+
+        return hasUpper && hasLower && hasDigit && hasSpecial;
+    }
+
 }
