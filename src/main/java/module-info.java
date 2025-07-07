@@ -5,6 +5,8 @@ module tracker.controller {
     requires org.controlsfx.controls;
     requires org.kordamp.ikonli.javafx;
 
+    requires java.sql;
+
     opens tracker.controller to javafx.fxml;
     exports tracker.controller;
 }
