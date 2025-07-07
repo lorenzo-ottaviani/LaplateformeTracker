@@ -1,12 +1,12 @@
 CREATE TYPE level AS ENUM('B1', 'B2', 'B3', 'M1', 'M2');
 
-CREATE TABLE IF NOT EXISTS "user" (
+CREATE TABLE IF NOT EXISTS "trackuser" (
     usr_id SERIAL PRIMARY KEY,
     usr_mail VARCHAR (50) NOT NULL,
     usr_password VARCHAR (100) NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS "student"(
+CREATE TABLE IF NOT EXISTS "trackstudent"(
     stud_id SERIAL PRIMARY KEY,
     stud_number VARCHAR(8) NOT NULL,
     stud_first_name VARCHAR (50) NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS "student"(
     stud_average_grade FLOAT
 );
 
-INSERT INTO "user" (usr_mail, usr_password) VALUES ('julien@mail.com', 'test');
+
 
 INSERT INTO "student" (stud_number, stud_first_name, stud_last_name, stud_birth_date, stud_level, stud_average_grade)
 VALUES
