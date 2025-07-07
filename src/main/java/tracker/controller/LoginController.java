@@ -1,4 +1,4 @@
-package tracker.view;
+package tracker.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -44,7 +44,7 @@ public class LoginController {
     protected void onRegisterButtonClick() {
         try {
             // Load the FXML file for the Register view
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("register-view.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/tracker/view/register-view.fxml"));
             Parent registerRoot = fxmlLoader.load();
 
             // Get the current stage from a control (e.g., userField)
@@ -66,7 +66,7 @@ public class LoginController {
     protected void switchToStudentsDisplayView() {
         try {
             // Load the FXML file for the Register view
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("students-display-view.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/tracker/view/students-display-view.fxml"));
             Parent studentsDisplayRoot = fxmlLoader.load();
 
             // Get the current stage from a control (e.g., userField)

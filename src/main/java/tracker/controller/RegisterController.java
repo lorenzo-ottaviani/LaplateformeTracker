@@ -1,4 +1,4 @@
-package tracker.view;
+package tracker.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,12 +21,6 @@ public class RegisterController {
 
     @FXML
     private PasswordField confirmPasswordField;
-
-    @FXML
-    private TextField confirmPasswordFailed;
-
-    @FXML
-    private Label passwordMismatchLabel;
 
     @FXML
     protected void onLoginButtonClick() {
@@ -55,17 +49,18 @@ public class RegisterController {
         String email = emailField.getText();
         String password = passwordField.getText();
         String confirmPassword = confirmPasswordField.getText();
-      
+
         System.out.println("My email: " + email);
         System.out.println("My password (first entry): " + password);
         System.out.println("My password (confirmation): " + confirmPassword);
 
-        if (!password.equals(confirmPassword)) {
-            passwordMismatchLabel.setVisible(true);
-        } else {
-            passwordMismatchLabel.setVisible(false);
+        /* Ici, tu appelles ta méthode de vérification en base de données
+        boolean isValidUser = checkCredentials(username, password);
 
-            System.out.println("Passwords match! You can register the user.");
-        }
+        if (isValidUser) {
+            welcomeText.setText("You have successfully logged in!");
+        } else {
+            welcomeText.setText("Invalid username or password.");
+        } */
     }
 }
