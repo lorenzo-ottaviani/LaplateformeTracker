@@ -27,17 +27,41 @@
 
     <!-- Center Content -->
     <center>
-        <VBox alignment="TOP_CENTER" spacing="20">
+        <VBox alignment="TOP_CENTER" spacing="10">
             <padding>
-                <Insets top="20" right="20" bottom="20" left="20"/>
+                <Insets top="10" right="20" bottom="10" left="20"/>
             </padding>
 
             <!-- Title -->
             <Label text="Students list"
                    style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #0077b6;"/>
 
+            <!-- CRUD BUTTONS -->
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Button text="Add"
+                        style="-fx-background-color: #0077b6;
+                           -fx-text-fill: white;
+                           -fx-font-weight: bold;
+                           -fx-background-radius: 10;
+                           -fx-padding: 6 14 6 14;"/>
+
+                <Button text="Update"
+                        style="-fx-background-color: #00ff00;
+                           -fx-text-fill: white;
+                           -fx-font-weight: bold;
+                           -fx-background-radius: 10;
+                           -fx-padding: 6 14 6 14;"/>
+
+                <Button text="Delete"
+                        style="-fx-background-color: #ff0000;
+                           -fx-text-fill: white;
+                           -fx-font-weight: bold;
+                           -fx-background-radius: 10;
+                           -fx-padding: 6 14 6 14;"/>
+            </HBox>
+
             <!-- TableView -->
-            <TableView fx:id="studentTable" prefHeight="400" maxWidth="750">
+            <TableView fx:id="studentTable" prefHeight="300" maxWidth="750">
                 <columns>
                     <TableColumn fx:id="colFirstName" text="First Name" prefWidth="100"/>
                     <TableColumn fx:id="colLastName" text="Last Name" prefWidth="100"/>
@@ -54,7 +78,8 @@
             <!-- Pagination -->
             <Pagination fx:id="pagination"
                         maxPageIndicatorCount="5"
-                        style="-fx-padding: 20 0 0 0;"/>
+                        style="-fx-padding: 10 0 0 0;"/>
         </VBox>
     </center>
+
 </BorderPane>

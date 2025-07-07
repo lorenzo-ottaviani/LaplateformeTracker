@@ -23,6 +23,9 @@ public class RegisterController {
     private PasswordField confirmPasswordField;
 
     @FXML
+    private TextField confirmPasswordFailed;
+
+    @FXML
     protected void onLoginButtonClick() {
         try {
             // Load the FXML file for the Login view
@@ -53,10 +56,12 @@ public class RegisterController {
         /* Ici, tu appelles ta méthode de vérification en base de données
         boolean isValidUser = checkCredentials(username, password);
 
-        if (isValidUser) {
-            welcomeText.setText("You have successfully logged in!");
+        if (password.equals(confirmPassword)) {
+
         } else {
             welcomeText.setText("Invalid username or password.");
-        } */
+        }
+        */
+
     }
 }
