@@ -26,6 +26,9 @@ public class RegisterController {
     private TextField confirmPasswordFailed;
 
     @FXML
+    private Label passwordMismatchLabel;
+
+    @FXML
     protected void onLoginButtonClick() {
         try {
             // Load the FXML file for the Login view
@@ -53,15 +56,12 @@ public class RegisterController {
         String password = passwordField.getText();
         String confirmPassword = confirmPasswordField.getText();
 
-        /* Ici, tu appelles ta méthode de vérification en base de données
-        boolean isValidUser = checkCredentials(username, password);
-
-        if (password.equals(confirmPassword)) {
-
+        if (!password.equals(confirmPassword)) {
+            passwordMismatchLabel.setVisible(true);
         } else {
-            welcomeText.setText("Invalid username or password.");
-        }
-        */
+            passwordMismatchLabel.setVisible(false);
 
+            System.out.println("Passwords match! You can register the user.");
+        }
     }
 }
