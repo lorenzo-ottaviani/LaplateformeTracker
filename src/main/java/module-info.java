@@ -6,6 +6,7 @@ module tracker.controller {
     requires org.kordamp.ikonli.javafx;
 
     requires java.sql;
+    requires spring.security.crypto;
 
     opens tracker.controller to javafx.fxml;
     exports tracker.controller;

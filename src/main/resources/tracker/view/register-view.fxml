@@ -56,7 +56,7 @@
         <Label fx:id="registrationErrorLabel"
                visible="false"
                wrapText="true"
-               style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #e63946;"
+               style="-fx-font-size: 12px; -fx-font-weight: bold;"
                maxWidth="350"
                alignment="CENTER"/>
     </VBox>

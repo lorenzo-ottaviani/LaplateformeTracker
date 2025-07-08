@@ -1,5 +1,6 @@
 package tracker.controller;
 
+import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,40 +9,47 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+import tracker.DAO.UserDAO;
+import tracker.model.User;
 
 import java.io.IOException;
 
+/**
+ * Controller for the registration view (register-view.fxml).
+ * Handles input validation, user registration, and navigation between views.
+ */
 public class RegisterController {
 
+    /** TextField for user's email input. */
     @FXML
     private TextField emailField;
 
+    /** PasswordField for user's password input. */
     @FXML
     private PasswordField passwordField;
 
+    /** PasswordField for confirming user's password. */
     @FXML
     private PasswordField confirmPasswordField;
 
-    @FXML
-    private TextField confirmPasswordFailed;
-
+    /** Label to display validation or registration error messages. */
     @FXML
     private Label registrationErrorLabel;
 
+    /**
+     * Handles the event when the user clicks the "Back to Login" button.
+     * Loads the login view and displays it.
+     */
     @FXML
     protected void onLoginButtonClick() {
         try {
-            // Load the FXML file for the Login view
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/tracker/view/login-view.fxml"));
             Parent loginRoot = fxmlLoader.load();
 
-            // Get the current stage from a control (ex: backToLoginButton)
             Stage stage = (Stage) emailField.getScene().getWindow();
-
-            // Create a new scene with the Login view
             Scene scene = new Scene(loginRoot, 800, 600);
 
-            // Replace the current scene with the new one
             stage.setScene(scene);
             stage.show();
 
@@ -50,41 +58,93 @@ public class RegisterController {
         }
     }
 
+    /**
+     * Handles the event when the user clicks the "Register" button.
+     * Validates the email and passwords, then attempts to register the user.
+     * Displays appropriate messages on success or failure.
+     */
     @FXML
     protected void onRegisterButtonClick() {
         String email = emailField.getText();
         String password = passwordField.getText();
         String confirmPassword = confirmPasswordField.getText();
 
-        System.out.println("My email: " + email);
-        System.out.println("My password (first entry): " + password);
-        System.out.println("My password (confirmation): " + confirmPassword);
+        registrationErrorLabel.setVisible(false);
 
-        // Email validation: must contain '@' and a '.' after the '@' part
-        if (email == null || !email.matches("^.+@.+\\..+$")) {
-            registrationErrorLabel.setText("Invalid email address.");
-            registrationErrorLabel.setVisible(true);
-            return; // Stop here if email is invalid
-        }
-
-        // Password strength validation
-        if (!isValidPassword(password)) {
-            registrationErrorLabel.setText("Password must be at least 12 characters and include uppercase, lowercase, " +
-                    "digit, and special character.");
+        if (!validateEmailAndPassword(email, password, confirmPassword)) {
+            registrationErrorLabel.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #e63946;");
             registrationErrorLabel.setVisible(true);
             return;
         }
 
-        // Password matching check
-        if (!password.equals(confirmPassword)) {
-            registrationErrorLabel.setText("Passwords do not match.");
+        User newUser = new User(email, password);
+
+        try {
+            if (UserDAO.saveUser(newUser)) {
+                newUser = UserDAO.loginUser(email, password);
+
+                registrationErrorLabel.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #2a9d8f;"); // green
+                registrationErrorLabel.setText("Registration successful! Redirecting to login...");
+                registrationErrorLabel.setVisible(true);
+
+                PauseTransition pause = new PauseTransition(Duration.seconds(2));
+                pause.setOnFinished(event -> onLoginButtonClick());
+                pause.play();
+
+            } else {
+                registrationErrorLabel.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #e63946;"); // red
+                registrationErrorLabel.setText("Registration failed: Email may already be in use.");
+                registrationErrorLabel.setVisible(true);
+            }
+        } catch (Exception e) {
+            registrationErrorLabel.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #e63946;"); // red
+            registrationErrorLabel.setText("An error occurred during registration. Please try again.");
             registrationErrorLabel.setVisible(true);
-        } else {
-            registrationErrorLabel.setVisible(false);
-            System.out.println("Email and passwords are valid! You can register the user.");
+            e.printStackTrace();
         }
     }
 
+    /**
+     * Validates the email format and password strength, including password confirmation.
+     *
+     * @param email User's email address.
+     * @param password User's chosen password.
+     * @param confirmPassword Confirmation of the password.
+     * @return true if all validations pass, false otherwise.
+     */
+    private boolean validateEmailAndPassword(String email, String password, String confirmPassword) {
+        if (email == null || !email.matches("^.+@.+\\..+$")) {
+            registrationErrorLabel.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #e63946;");
+            registrationErrorLabel.setText("Invalid email address.");
+            registrationErrorLabel.setVisible(true);
+            return false;
+        }
+
+        if (!isValidPassword(password)) {
+            registrationErrorLabel.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #e63946;");
+            registrationErrorLabel.setText("Password must be at least 12 characters and include uppercase, lowercase, " +
+                    "digit, and special character.");
+            registrationErrorLabel.setVisible(true);
+            return false;
+        }
+
+        if (!password.equals(confirmPassword)) {
+            registrationErrorLabel.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #e63946;");
+            registrationErrorLabel.setText("Passwords do not match.");
+            registrationErrorLabel.setVisible(true);
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Checks if the password meets strength requirements:
+     * minimum length 12, contains uppercase, lowercase, digit, and special character.
+     *
+     * @param password Password to validate.
+     * @return true if password is strong enough, false otherwise.
+     */
     private boolean isValidPassword(String password) {
         if (password == null || password.length() < 12) return false;
 

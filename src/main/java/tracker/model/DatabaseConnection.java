@@ -2,13 +2,16 @@ package tracker.model;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Properties;
 
 /**
- * Manages the connection to PostgreSQL database.
- * Checks if the target database exists, creates it if necessary,
- * and returns a connection to that database.
+ * Handles configuration and PostgreSQL connection.
+ * Ensures the database exists at startup, and provides connections afterwards.
  */
 public class DatabaseConnection {
 
@@ -18,14 +21,11 @@ public class DatabaseConnection {
     private static String DB_PASS;
     private static String DB_NAME;
 
-    static {
-        loadConfig();
-    }
-
     /**
-     * Loads the database configuration from application.properties file.
+     * Loads DB configuration from properties file.
+     * @throws IOException if config file is missing or invalid.
      */
-    private static void loadConfig() {
+    public static void loadConfig() throws IOException {
         try (InputStream input = DatabaseConnection.class.getResourceAsStream("/tracker/application.properties")) {
             Properties prop = new Properties();
 
@@ -41,27 +41,43 @@ public class DatabaseConnection {
             DB_PASS = prop.getProperty("db.password");
             DB_NAME = prop.getProperty("db.name");
 
-        } catch (IOException e) {
-            System.err.println("❌ Failed to load database configuration: " + e.getMessage());
         } catch (NumberFormatException e) {
-            System.err.println("❌ Invalid port number in configuration file: " + e.getMessage());
+            throw new IOException("❌ Invalid port number in configuration file: " + e.getMessage());
         }
     }
 
     /**
-     * Connects to the PostgreSQL server default database (usually "postgres"),
-     * checks if the target database exists, creates it if it does not exist,
-     * then returns a connection to the target database.
-     *
-     * @return Connection to the target database, or null if connection failed.
+     * Initializes the database: loads config and ensures DB exists.
+     * @throws IOException if configuration fails
+     * @throws SQLException if DB server or creation fails
      */
-    public static Connection connect() {
+    public static void initialize() throws IOException, SQLException {
+        loadConfig();
+        checkAndCreateDatabaseIfNeeded();
+    }
+
+    /**
+     * Returns a connection to the target database.
+     * @return Connection object
+     * @throws SQLException if connection fails
+     */
+    public static Connection getConnection() throws SQLException {
+        String targetUrl = String.format("jdbc:postgresql://%s:%d/%s", DB_HOST, DB_PORT, DB_NAME);
+        return DriverManager.getConnection(targetUrl, DB_USER, DB_PASS);
+    }
+
+    /**
+     * Connects to the default PostgreSQL database ("postgres") and checks whether
+     * the target application database exists. If it does not exist, the method
+     * delegates the creation to {@link DatabaseCreator#createDatabase}.
+     *
+     * @throws SQLException if the connection to the server fails or if any error occurs
+     *                      during the database existence check or creation process.
+     */
+    private static void checkAndCreateDatabaseIfNeeded() throws SQLException {
         String defaultUrl = String.format("jdbc:postgresql://%s:%d/postgres", DB_HOST, DB_PORT);
 
-        // Connect to the default database to check if the target database needs to be created
         try (Connection conn = DriverManager.getConnection(defaultUrl, DB_USER, DB_PASS)) {
-            System.out.println("✅ Connected to PostgreSQL server (default database).");
-
             if (!databaseExists(conn, DB_NAME)) {
                 System.out.println("⚠️ Database '" + DB_NAME + "' does not exist. Creating...");
                 DatabaseCreator.createDatabase(conn, DB_NAME, DB_HOST, DB_PORT, DB_USER, DB_PASS);
@@ -69,47 +85,16 @@ public class DatabaseConnection {
             } else {
                 System.out.println("ℹ️ Database '" + DB_NAME + "' already exists.");
             }
-
-        } catch (SQLException e) {
-            System.err.println("❌ Error connecting to PostgreSQL server or checking DB existence: " + e.getMessage());
-            return null;
-        }
-
-        // Connect to the target database
-        String targetUrl = String.format("jdbc:postgresql://%s:%d/%s", DB_HOST, DB_PORT, DB_NAME);
-
-        try {
-            Connection connToDb = DriverManager.getConnection(targetUrl, DB_USER, DB_PASS);
-            System.out.println("✅ Successfully connected to PostgreSQL database '" + DB_NAME + "'!");
-            return connToDb;
-        } catch (SQLException e) {
-            System.err.println("❌ Could not connect to database '" + DB_NAME + "': " + e.getMessage());
-            return null;
         }
     }
 
     /**
-     * Returns a valid Connection to the target database.
-     * Throws RuntimeException if connection fails.
+     * Checks whether a database with the given name exists on the PostgreSQL server.
      *
-     * @return a valid Connection object.
-     * @throws RuntimeException if connection could not be established.
-     */
-    public static Connection getConnection() {
-        Connection conn = connect();
-        if (conn == null) {
-            throw new RuntimeException("Failed to establish database connection.");
-        }
-        return conn;
-    }
-
-    /**
-     * Checks whether a database with the specified name exists.
-     *
-     * @param conn   Connection to the default database.
-     * @param dbName Name of the database to check.
-     * @return true if the database exists, false otherwise.
-     * @throws SQLException if a database access error occurs.
+     * @param conn   An active connection to the PostgreSQL server (typically the "postgres" default database).
+     * @param dbName The name of the database to check.
+     * @return {@code true} if the database exists, {@code false} otherwise.
+     * @throws SQLException if a database access error occurs during the query.
      */
     private static boolean databaseExists(Connection conn, String dbName) throws SQLException {
         String checkDbQuery = "SELECT 1 FROM pg_database WHERE datname = ?";

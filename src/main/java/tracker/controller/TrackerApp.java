@@ -6,7 +6,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.sql.Connection;
 
 import tracker.model.DatabaseConnection;
 
@@ -21,14 +20,13 @@ public class TrackerApp extends Application {
     }
 
     public static void main(String[] args) {
-        try (Connection conn = DatabaseConnection.getConnection()) {
-            System.out.println("✅ Database connection established successfully.");
-
-            launch();  // Start JavaFX application
-
+        try {
+            DatabaseConnection.initialize();
+            System.out.println("✅ Database is ready.");
+            launch();
         } catch (Exception e) {
-            System.err.println("❌ Failed to connect to the database: " + e.getMessage());
-            System.exit(1);  // Exit app if DB connection fails
+            System.err.println("❌ Critical error during DB initialization: " + e.getMessage());
+            System.exit(1); // Force exit: can't run app without DB
         }
     }
 }
