@@ -1,10 +1,11 @@
-package tracker.view;
+package tracker.controller;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -15,6 +16,7 @@ import java.sql.Date;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -62,7 +64,13 @@ public class StudentsDisplayController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Mock data
 
-        ArrayList<Student> dbStudents = StudentDAO.selectAll();
+
+        ArrayList<Student> dbStudents = null;
+        try {
+            dbStudents = StudentDAO.selectAll();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
         List<Student> studentList = new ArrayList<>();
         for (Student s : dbStudents) {
             studentList.add(new Student(
@@ -90,11 +98,11 @@ public class StudentsDisplayController implements Initializable {
         pagination.setPageFactory(this::createPage);
     }
 
-    private TableView<Student> createPage(int pageIndex) {
+    private Node createPage(int pageIndex) {
         int fromIndex = pageIndex * ROWS_PER_PAGE;
         int toIndex = Math.min(fromIndex + ROWS_PER_PAGE, allStudents.size());
         studentTable.setItems(FXCollections.observableArrayList(allStudents.subList(fromIndex, toIndex)));
-        return studentTable;
+        return new Label(""); // Required by Pagination, but not used for display
     }
 
     @FXML

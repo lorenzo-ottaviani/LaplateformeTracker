@@ -1,113 +1,68 @@
 package tracker.DAO;
 
+import tracker.model.DatabaseConnection;
 import tracker.model.User;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.*;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Properties;
 
 public class UserDAO  {
 
     static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-    public static boolean saveUser(User newUser) {
+    public static boolean saveUser(User newUser) throws SQLException {
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            String email = newUser.userMailProperty().get();
+            String hashedPassword = encoder.encode(newUser.userPasswordProperty().get());
 
-        Properties props = new Properties();
-        try (FileInputStream fis = new FileInputStream("application.properties")) {
-            props.load(fis);
-
-            String url = props.getProperty("DB_URL");
-            String login = props.getProperty("DB_USER");
-            String password = props.getProperty("DB_PASSWORD");
-
-            try(Connection connection = DriverManager.getConnection(url, login, password)) {
-                String hashed = encoder.encode(newUser.userPasswordProperty().get());
-                String checkIfExisting = "SELECT * FROM trackuser WHERE usr_mail=?;";
-
-                // use of prepared statements to prevent SQL injection
-                try (PreparedStatement prepIfExisting = connection.prepareStatement(checkIfExisting)) {
-
-                    prepIfExisting.setString(1, newUser.userMailProperty().get());
-
-                    try (ResultSet resultSet = prepIfExisting.executeQuery()){
-                        // si il existe déjà un utilisateur avec le même login en base de données
-                        //on renvoie faux
-                        if (resultSet.next()) {
-                            return false ;
-                        } else {
-                            // use of prepared statements to prevent SQL injection
-                            String sqlOrder = "INSERT INTO trackuser (usr_mail, usr_password) VALUES (?, ?); ";
-                            try (PreparedStatement prep = connection.prepareStatement(sqlOrder)) {
-                                prep.setString(1, newUser.userMailProperty().get());
-                                prep.setString(2, hashed);
-                                prep.executeUpdate();
-                                return true ;
-                            }
-
-                        }
+            String checkQuery = "SELECT 1 FROM trackuser WHERE usr_mail = ?";
+            try (PreparedStatement checkStmt = conn.prepareStatement(checkQuery)) {
+                checkStmt.setString(1, email);
+                try (ResultSet rs = checkStmt.executeQuery()) {
+                    if (rs.next()) {
+                        return false; // user exists
                     }
-
                 }
-
             }
-        } catch (SQLException e){
-            e.printStackTrace();
+
+            String insertQuery = "INSERT INTO trackuser (usr_mail, usr_password) VALUES (?, ?)";
+            try (PreparedStatement insertStmt = conn.prepareStatement(insertQuery)) {
+                insertStmt.setString(1, email);
+                insertStmt.setString(2, hashedPassword);
+                insertStmt.executeUpdate();
+                return true;
+            }
         }
-        catch(Exception e){
-            e.printStackTrace();
-        }
-        return false;
     }
 
-    public static User connectUser(String userMail, String userPassword) {
+    /**
+     * Attempts to authenticate a user.
+     * @return a User object if credentials are valid; otherwise null.
+     * @throws SQLException if a DB error occurs
+     */
+    public static User loginUser(String email, String password) throws SQLException {
+        String sql = "SELECT * FROM trackuser WHERE usr_mail = ?";
 
-        Properties props = new Properties();
-        try (FileInputStream fis = new FileInputStream("application.properties")) {
-            props.load(fis);
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            String url = props.getProperty("DB_URL");
-            String login = props.getProperty("DB_USER");
-            String password = props.getProperty("DB_PASSWORD");
-
-            try (Connection connection = DriverManager.getConnection(url, login, password)){
-
-                // use of prepared statements to prevent SQL injection
-                String sqlOrder = "SELECT * FROM trackuser WHERE usr_mail =?;" ;
-
-                try (PreparedStatement prep = connection.prepareStatement(sqlOrder)){
-                    prep.setString(1, userMail);
-
-                    try(ResultSet resultSet = prep.executeQuery()){
-                        if(resultSet.next()){
-                            int uID = resultSet.getInt(1);
-                            String hashedPassword = resultSet.getString("usr_password");
-                            if (encoder.matches(userPassword, hashedPassword)){
-                                User user = new User(
-                                        resultSet.getString("usr_mail"),
-                                        userPassword
-                                );
-                                user.userIdProperty().set(uID);
-                                return user ;
-                            }
-                        }
+            stmt.setString(1, email);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    String hashed = rs.getString("usr_password");
+                    if (encoder.matches(password, hashed)) {
+                        User user = new User(rs.getString("usr_mail"), password);
+                        user.userIdProperty().set(rs.getInt("usr_id"));
+                        return user;
                     }
                 }
             }
-
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
-        catch(Exception e){
-            e.printStackTrace();
         }
 
-        return  null;
+        return null;
     }
 
 }
