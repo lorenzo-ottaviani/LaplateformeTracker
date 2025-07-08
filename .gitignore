@@ -26,6 +26,9 @@ replay_pid*
 # Maven build folder
 target/
 
+# Database settings file
+application.properties
+
 ### IntelliJ IDEA ###
 out/
 !**/src/main/**/out/
