@@ -27,20 +27,21 @@ public class UserDAO  {
             String password = props.getProperty("DB_PASSWORD");
 
             try(Connection connection = DriverManager.getConnection(url, login, password)) {
-
                 String hashed = encoder.encode(newUser.userPasswordProperty().get());
                 String checkIfExisting = "SELECT * FROM trackuser WHERE usr_mail=?;";
 
+                // use of prepared statements to prevent SQL injection
                 try (PreparedStatement prepIfExisting = connection.prepareStatement(checkIfExisting)) {
 
                     prepIfExisting.setString(1, newUser.userMailProperty().get());
 
                     try (ResultSet resultSet = prepIfExisting.executeQuery()){
                         // si il existe déjà un utilisateur avec le même login en base de données
-                        //on redirige vers accueil
+                        //on renvoie faux
                         if (resultSet.next()) {
                             return false ;
                         } else {
+                            // use of prepared statements to prevent SQL injection
                             String sqlOrder = "INSERT INTO trackuser (usr_mail, usr_password) VALUES (?, ?); ";
                             try (PreparedStatement prep = connection.prepareStatement(sqlOrder)) {
                                 prep.setString(1, newUser.userMailProperty().get());
@@ -76,6 +77,7 @@ public class UserDAO  {
 
             try (Connection connection = DriverManager.getConnection(url, login, password)){
 
+                // use of prepared statements to prevent SQL injection
                 String sqlOrder = "SELECT * FROM trackuser WHERE usr_mail =?;" ;
 
                 try (PreparedStatement prep = connection.prepareStatement(sqlOrder)){

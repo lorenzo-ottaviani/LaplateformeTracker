@@ -7,10 +7,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import tracker.DAO.StudentDAO;
 import tracker.DAO.UserDAO;
+import tracker.model.Student;
 import tracker.model.User;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 public class LoginController {
 
@@ -84,4 +87,5 @@ public class LoginController {
             e.printStackTrace();
         }
     }
+
 }
