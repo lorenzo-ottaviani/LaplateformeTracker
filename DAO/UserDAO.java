@@ -65,7 +65,7 @@ public class UserDAO  {
         return false;
     }
 
-    public static User isValidUser(String userMail, String userPassword) {
+    public static User connectUser(String userMail, String userPassword) {
 
         Properties props = new Properties();
         try (FileInputStream fis = new FileInputStream("application.properties")) {

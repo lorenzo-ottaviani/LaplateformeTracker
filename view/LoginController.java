@@ -31,7 +31,7 @@ public class LoginController {
         System.out.println("My email: " + email);
         System.out.println("My password: " + password);
 
-        User user = UserDAO.isValidUser(email, password);
+        User user = UserDAO.connectUser(email, password);
 
         // seuls les utilisateurs enregistrés peuvent accéder aux étudiants
         if (user !=null){
