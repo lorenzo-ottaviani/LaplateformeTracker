@@ -30,4 +30,3 @@ public class Student {
     public StringProperty educationLevelProperty() { return educationLevel; }
     public DoubleProperty averageGradeProperty() { return averageGrade; }
 }
-

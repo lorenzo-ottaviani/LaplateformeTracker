@@ -33,9 +33,10 @@ public class StudentDAO {
                     Date birthDate = rset.getDate("stud_birth_date");
                     String studentNumber = rset.getString("stud_number");
                     String educationLevel = rset.getString("stud_level");
-                    Float averageGrade =rset.getFloat("stud_average_grade");
+                    Double averageGrade =rset.getDouble("stud_average_grade");
 
-                    Student newStudent = new Student(firstName, lastName, birthDate, studentNumber, educationLevel, averageGrade);
+                    Student newStudent = new Student(firstName, lastName, birthDate.toLocalDate(), studentNumber,
+                            educationLevel, averageGrade);
                     studentsList.add(newStudent);
                 }
                 return  studentsList;

@@ -10,11 +10,16 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+
+import tracker.DAO.StudentDAO;
 import tracker.model.Student;
+import java.sql.Date;
+import java.sql.SQLException;
 
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -47,41 +52,36 @@ public class StudentsDisplayController implements Initializable {
     private final static int ROWS_PER_PAGE = 10;
     private ObservableList<Student> allStudents;
 
+    public void setStudentData(List<Student> students) {
+        this.allStudents = FXCollections.observableArrayList(students);
+
+        // Recalculer la pagination si les données sont mises à jour après initialize()
+        int pageCount = (int) Math.ceil((double) allStudents.size() / ROWS_PER_PAGE);
+        pagination.setPageCount(Math.max(pageCount, 1));
+        pagination.setPageFactory(this::createPage);
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Mock data
-        allStudents = FXCollections.observableArrayList(
-                new Student("Alice", "Martin", LocalDate.of(2001, 3, 15),
-                        "S001", "Licence", 14.2),
-                new Student("Bob", "Durand", LocalDate.of(2000, 11, 5),
-                        "S002", "Master", 13.5),
-                new Student("Chloé", "Petit", LocalDate.of(2002, 6, 22),
-                        "S003", "Licence", 15.8),
-                new Student("David", "Lemoine", LocalDate.of(2001, 7, 19),
-                        "S004", "Licence", 12.3),
-                new Student("Emma", "Bernard", LocalDate.of(2002, 4, 10),
-                        "S005", "Master", 16.1),
-                new Student("François", "Dubois", LocalDate.of(2000, 9, 23),
-                        "S006", "Licence", 11.7),
-                new Student("Gabrielle", "Moreau", LocalDate.of(2001, 12, 1),
-                        "S007", "Master", 14.9),
-                new Student("Hugo", "Garcia", LocalDate.of(2002, 2, 17),
-                        "S008", "Licence", 13.3),
-                new Student("Isabelle", "Leroy", LocalDate.of(2000, 5, 28),
-                        "S009", "Master", 12.8),
-                new Student("Julien", "Roux", LocalDate.of(2001, 8, 6),
-                        "S010", "Licence", 13.6),
-                new Student("Karine", "Simon", LocalDate.of(2002, 1, 15),
-                        "S011", "Master", 15.2),
-                new Student("Louis", "Michel", LocalDate.of(2000, 3, 30),
-                        "S012", "Licence", 14.4),
-                new Student("Manon", "Fournier", LocalDate.of(2001, 10, 8),
-                        "S013", "Master", 13.9),
-                new Student("Nicolas", "Guerin", LocalDate.of(2002, 7, 3),
-                        "S014", "Licence", 12.5),
-                new Student("Océane", "Martinez", LocalDate.of(2000, 6, 20),
-                        "S015", "Master", 15.7)
-        );
+        ArrayList<Student> dbStudents = null;
+        try {
+            dbStudents = StudentDAO.selectAll();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        List<Student> studentList = new ArrayList<>();
+        for (Student s : dbStudents) {
+            studentList.add(new Student(
+                    s.firstNameProperty().get(),
+                    s.lastNameProperty().get(),
+                    s.birthDateProperty().get(),
+                    s.studentNumberProperty().get(),
+                    s.educationLevelProperty().get(),
+                    s.averageGradeProperty().get()
+            ));
+        }
+        allStudents = FXCollections.observableArrayList(studentList);
 
         // Set row height to 40 pixels
         studentTable.setRowFactory(tv -> {
