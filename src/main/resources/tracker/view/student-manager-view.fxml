@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.geometry.Pos?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="tracker.controller.StudentManagerController"
+            prefWidth="800" prefHeight="600"
+            style="-fx-background-color: #f0f0f0;">
+
+    <!-- Top bar with title -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <padding>
+                <Insets top="20" left="20" bottom="10"/>
+            </padding>
+            <Label text="Student Details"
+                   style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #0077b6;"/>
+        </HBox>
+    </top>
+
+    <!-- Center: Table -->
+    <center>
+        <VBox alignment="TOP_CENTER" spacing="20">
+            <padding>
+                <Insets top="30" left="30" right="30"/>
+            </padding>
+
+            <TableView fx:id="studentDetailTable" prefHeight="80" maxWidth="740">
+                <columns>
+                    <TableColumn fx:id="colFirstName" text="First Name" prefWidth="120"/>
+                    <TableColumn fx:id="colLastName" text="Last Name" prefWidth="120"/>
+                    <TableColumn fx:id="colBirthDate" text="Birth Date" prefWidth="120"/>
+                    <TableColumn fx:id="colStudentNumber" text="Student Number" prefWidth="140"/>
+                    <TableColumn fx:id="colEducationLevel" text="Education Level" prefWidth="120"/>
+                    <TableColumn fx:id="colAverageGrade" text="Average Grade" prefWidth="120"/>
+                </columns>
+                <style>
+                    -fx-control-inner-background-alt: #e9f5fb;
+                </style>
+            </TableView>
+
+        </VBox>
+    </center>
+</BorderPane>
+
+

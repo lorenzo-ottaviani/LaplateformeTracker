@@ -47,6 +47,9 @@ public class StudentsDisplayController implements Initializable {
     private TableColumn<Student, Double> colAverageGrade;
 
     @FXML
+    private TableColumn<Student, Void> colSelect;
+
+    @FXML
     private Pagination pagination;
 
     private final static int ROWS_PER_PAGE = 10;
@@ -55,7 +58,6 @@ public class StudentsDisplayController implements Initializable {
     public void setStudentData(List<Student> students) {
         this.allStudents = FXCollections.observableArrayList(students);
 
-        // Recalculer la pagination si les données sont mises à jour après initialize()
         int pageCount = (int) Math.ceil((double) allStudents.size() / ROWS_PER_PAGE);
         pagination.setPageCount(Math.max(pageCount, 1));
         pagination.setPageFactory(this::createPage);
@@ -97,6 +99,7 @@ public class StudentsDisplayController implements Initializable {
         colStudentNumber.setCellValueFactory(cell -> cell.getValue().studentNumberProperty());
         colEducationLevel.setCellValueFactory(cell -> cell.getValue().educationLevelProperty());
         colAverageGrade.setCellValueFactory(cell -> cell.getValue().averageGradeProperty().asObject());
+        addSelectButtonToTable();
 
         // Configure pagination
         int pageCount = (int) Math.ceil((double) allStudents.size() / ROWS_PER_PAGE);
@@ -109,6 +112,49 @@ public class StudentsDisplayController implements Initializable {
         int toIndex = Math.min(fromIndex + ROWS_PER_PAGE, allStudents.size());
         studentTable.setItems(FXCollections.observableArrayList(allStudents.subList(fromIndex, toIndex)));
         return new Label(""); // Required by Pagination, but not used for display
+    }
+
+    private void addSelectButtonToTable() {
+        colSelect.setCellFactory(param -> new TableCell<>() {
+            private final Button selectButton = new Button("Select");
+
+            {
+                selectButton.setStyle("-fx-background-color: #0077b6; -fx-text-fill: white; -fx-background-radius: 8;");
+                selectButton.setOnAction(event -> {
+                    Student selectedStudent = getTableView().getItems().get(getIndex());
+                    openStudentManagerView(selectedStudent);
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(selectButton);
+                }
+            }
+        });
+    }
+
+    private void openStudentManagerView(Student student) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tracker/view/student-manager-view.fxml"));
+            Parent root = loader.load();
+
+            // Passer les données de l'étudiant au nouveau contrôleur
+            StudentManagerController controller = loader.getController();
+            controller.setStudentData(student);
+
+            Stage stage = new Stage();
+            stage.setTitle("Manage Student");
+            stage.setScene(new Scene(root, 600, 400));
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

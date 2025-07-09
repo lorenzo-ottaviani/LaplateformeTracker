@@ -64,12 +64,13 @@
             <!-- TableView -->
             <TableView fx:id="studentTable" prefHeight="400" maxWidth="750">
                 <columns>
-                    <TableColumn fx:id="colFirstName" text="First Name" prefWidth="130"/>
-                    <TableColumn fx:id="colLastName" text="Last Name" prefWidth="130"/>
-                    <TableColumn fx:id="colBirthDate" text="Birth Date" prefWidth="150"/>
-                    <TableColumn fx:id="colStudentNumber" text="Student Number" prefWidth="120"/>
-                    <TableColumn fx:id="colEducationLevel" text="Education Level" prefWidth="110"/>
-                    <TableColumn fx:id="colAverageGrade" text="Average Grade" prefWidth="110"/>
+                    <TableColumn fx:id="colFirstName" text="First Name" prefWidth="110"/>
+                    <TableColumn fx:id="colLastName" text="Last Name" prefWidth="110"/>
+                    <TableColumn fx:id="colBirthDate" text="Birth Date" prefWidth="140"/>
+                    <TableColumn fx:id="colStudentNumber" text="Student Number" prefWidth="100"/>
+                    <TableColumn fx:id="colEducationLevel" text="Education Level" prefWidth="90"/>
+                    <TableColumn fx:id="colAverageGrade" text="Average Grade" prefWidth="90"/>
+                    <TableColumn fx:id="colSelect" text="Select" prefWidth="90"/>
                 </columns>
                 <style>
                     -fx-control-inner-background-alt: #e9f5fb;
