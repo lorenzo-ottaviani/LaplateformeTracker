@@ -50,6 +50,9 @@ public class StudentsDisplayController implements Initializable {
     private TableColumn<Student, Void> colSelect;
 
     @FXML
+    private TableColumn<Student, Void> colDelete;
+
+    @FXML
     private Pagination pagination;
 
     private final static int ROWS_PER_PAGE = 10;
@@ -100,6 +103,7 @@ public class StudentsDisplayController implements Initializable {
         colEducationLevel.setCellValueFactory(cell -> cell.getValue().educationLevelProperty());
         colAverageGrade.setCellValueFactory(cell -> cell.getValue().averageGradeProperty().asObject());
         addSelectButtonToTable();
+        addDeleteButtonToTable();
 
         // Configure pagination
         int pageCount = (int) Math.ceil((double) allStudents.size() / ROWS_PER_PAGE);
@@ -119,7 +123,7 @@ public class StudentsDisplayController implements Initializable {
             private final Button selectButton = new Button("Select");
 
             {
-                selectButton.setStyle("-fx-background-color: #0077b6; -fx-text-fill: white; -fx-background-radius: 8;");
+                selectButton.setStyle("-fx-background-color: #228B22; -fx-text-fill: white; -fx-background-radius: 8;");
                 selectButton.setOnAction(event -> {
                     Student selectedStudent = getTableView().getItems().get(getIndex());
                     openStudentManagerView(selectedStudent);
@@ -133,6 +137,30 @@ public class StudentsDisplayController implements Initializable {
                     setGraphic(null);
                 } else {
                     setGraphic(selectButton);
+                }
+            }
+        });
+    }
+
+    private void addDeleteButtonToTable() {
+        colDelete.setCellFactory(param -> new TableCell<>() {
+            private final Button deleteButton = new Button("Delete");
+
+            {
+                deleteButton.setStyle("-fx-background-color: #ff0000; -fx-text-fill: white; -fx-background-radius: 8;");
+                deleteButton.setOnAction(event -> {
+                    Student selectedStudent = getTableView().getItems().get(getIndex());
+                    // openStudentManagerView(selectedStudent);
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(deleteButton);
                 }
             }
         });
