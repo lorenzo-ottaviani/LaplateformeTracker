@@ -143,28 +143,47 @@ public class StudentsDisplayController implements Initializable {
     }
 
     private void addDeleteButtonToTable() {
-        colDelete.setCellFactory(param -> new TableCell<>() {
-            private final Button deleteButton = new Button("Delete");
+        colDelete.setCellFactory(param -> {
+            StudentsDisplayController controllerRef = this;  // 🔥 capture correcte du bon "this"
 
-            {
-                deleteButton.setStyle("-fx-background-color: #ff0000; -fx-text-fill: white; -fx-background-radius: 8;");
-                deleteButton.setOnAction(event -> {
-                    Student selectedStudent = getTableView().getItems().get(getIndex());
-                    // openStudentManagerView(selectedStudent);
-                });
-            }
+            return new TableCell<>() {
+                private final Button deleteButton = new Button("Delete");
 
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty) {
-                    setGraphic(null);
-                } else {
-                    setGraphic(deleteButton);
+                {
+                    deleteButton.setStyle("-fx-background-color: #ff0000; -fx-text-fill: white; -fx-background-radius: 8;");
+                    deleteButton.setOnAction(event -> {
+                        Student selectedStudent = getTableView().getItems().get(getIndex());
+                        try {
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tracker/view/delete-confirmation-view.fxml"));
+                            Parent root = loader.load();
+
+                            DeleteConfirmController controller = loader.getController();
+                            controller.setStudent(selectedStudent, controllerRef); // ✅ là c'est bon
+
+                            Stage stage = new Stage();
+                            stage.setTitle("Confirmation suppression");
+                            stage.setScene(new Scene(root, 600, 400));
+                            stage.show();
+
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
                 }
-            }
+
+                @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        setGraphic(deleteButton);
+                    }
+                }
+            };
         });
     }
+
 
     private void openStudentManagerView(Student student) {
         try {
@@ -185,6 +204,24 @@ public class StudentsDisplayController implements Initializable {
         }
     }
 
+    private void openDeleteConfirmation(Student student) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tracker/view/delete-confirmation-view.fxml"));
+            Parent root = loader.load();
+
+            // Passer les données de l'étudiant au nouveau contrôleur
+            StudentManagerController controller = loader.getController();
+            controller.setStudentData(student);
+
+            Stage stage = new Stage();
+            stage.setTitle("CONFIRM DELETE");
+            stage.setScene(new Scene(root, 600, 400));
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @FXML
     protected void onLogoutButtonClick() {
@@ -206,4 +243,20 @@ public class StudentsDisplayController implements Initializable {
             e.printStackTrace();
         }
     }
+
+    public void refreshStudentTable() {
+        try {
+            List<Student> updatedList = StudentDAO.selectAll();
+            allStudents.setAll(updatedList);
+
+            int pageCount = (int) Math.ceil((double) allStudents.size() / ROWS_PER_PAGE);
+            pagination.setPageCount(Math.max(pageCount, 1));
+            pagination.setPageFactory(this::createPage);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }
