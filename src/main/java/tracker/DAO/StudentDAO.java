@@ -46,4 +46,13 @@ public class StudentDAO {
 
     }
 
+    public static boolean deleteStudent(Student student) throws SQLException {
+        String sql = "DELETE FROM trackstudent WHERE stud_number = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, student.getStudentNumber());
+            return stmt.executeUpdate() > 0;
+        }
+    }
+
 }

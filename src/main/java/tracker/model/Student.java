@@ -22,6 +22,11 @@ public class Student {
         this.averageGrade = new SimpleDoubleProperty(averageGrade);
     }
 
+    public String getStudentNumber() {
+        return studentNumber.get();
+    }
+
+
     // Getters for properties
     public StringProperty firstNameProperty() { return firstName; }
     public StringProperty lastNameProperty() { return lastName; }
