@@ -46,7 +46,7 @@ public class LoginController {
                 showAlert(Alert.AlertType.WARNING, "Login Failed", "Invalid email or password.");
             }
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.err.println("❌ Database error during login: " + e.getMessage());
             showAlert(Alert.AlertType.ERROR, "Database Error", "Could not connect to the database.");
         }

@@ -9,7 +9,7 @@ import java.io.IOException;
 
 import tracker.model.DatabaseConnection;
 
-public class TrackerApp extends Application {
+public class  TrackerApp extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(TrackerApp.class.getResource("/tracker/view/login-view.fxml"));

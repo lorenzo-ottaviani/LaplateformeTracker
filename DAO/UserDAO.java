@@ -6,13 +6,20 @@ import tracker.model.User;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.*;
 
 public class UserDAO  {
 
     static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
+    /**
+     * Saves a new user in the database.
+     * @param newUser the user to save
+     * @return true if saved successfully; false if email already exists.
+     * @throws SQLException if a database error occurs
+     */
     public static boolean saveUser(User newUser) throws SQLException {
         try (Connection conn = DatabaseConnection.getConnection()) {
             String email = newUser.userMailProperty().get();

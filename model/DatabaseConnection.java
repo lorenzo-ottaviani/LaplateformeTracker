@@ -1,6 +1,5 @@
 package tracker.model;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -27,7 +26,7 @@ public class DatabaseConnection {
      * @throws IOException if config file is missing or invalid.
      */
     public static void loadConfig() throws IOException {
-        try (FileInputStream input = new FileInputStream("application.properties")) {
+        try (InputStream input = DatabaseConnection.class.getResourceAsStream("/tracker/application.properties")) {
             Properties prop = new Properties();
 
             if (input == null) {
