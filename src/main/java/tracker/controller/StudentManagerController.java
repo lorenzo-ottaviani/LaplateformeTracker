@@ -4,9 +4,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import tracker.DAO.StudentDAO;
 import tracker.model.Student;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
@@ -49,20 +51,22 @@ public class StudentManagerController implements Initializable {
 
     // --- Submit handlers ---
     @FXML
-    private void onSubmitFirstName() {
-        String newValue = inputFirstName.getText().trim();
-        if (!newValue.isEmpty()) {
-            student.firstNameProperty().set(newValue);
-            colFirstNameLabel.setText(newValue);
+    private void onSubmitFirstName() throws SQLException {
+        String newFirstName = inputFirstName.getText().trim();
+        if (!newFirstName.isEmpty()) {
+            StudentDAO.updateFirstNameStudent(student.studentNumberProperty().get(), newFirstName);
+            student.firstNameProperty().set(newFirstName);
+            colFirstNameLabel.setText(newFirstName);
         }
     }
 
     @FXML
-    private void onSubmitLastName() {
-        String newValue = inputLastName.getText().trim();
-        if (!newValue.isEmpty()) {
-            student.lastNameProperty().set(newValue);
-            colLastNameLabel.setText(newValue);
+    private void onSubmitLastName() throws  SQLException {
+        String newLastName = inputLastName.getText().trim();
+        if (!newLastName.isEmpty()) {
+            StudentDAO.updateLastNameStudent(student.studentNumberProperty().get(), newLastName);
+            student.lastNameProperty().set(newLastName);
+            colLastNameLabel.setText(newLastName);
         }
     }
 

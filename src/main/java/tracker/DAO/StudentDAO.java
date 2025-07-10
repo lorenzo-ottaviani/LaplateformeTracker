@@ -41,9 +41,53 @@ public class StudentDAO {
                 }
                 return  studentsList;
             }
-
         }
+    }
 
+    public static boolean deleteStudent(Student student) throws SQLException {
+        String sql = "DELETE FROM trackstudent WHERE stud_number = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, student.getStudentNumber());
+            return stmt.executeUpdate() > 0;
+        }
+    }
+
+    public static boolean updateFirstNameStudent(String studentID, String newFirstName) throws  SQLException{
+        try(Connection conn = DatabaseConnection.getConnection()){
+            String sqlOrder = "UPDATE trackstudent SET stud_first_name=? WHERE stud_number =?;";
+            try(PreparedStatement prep = conn.prepareStatement(sqlOrder)){
+                prep.setString(1, newFirstName);
+                prep.setString(2, studentID);
+                prep.executeUpdate();
+                System.out.println("First name has been changed");
+                return true;
+            }
+        } catch(SQLException e) {
+            e.printStackTrace();
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+    return false;
+    }
+
+public static  boolean updateLastNameStudent(String studentID, String newLastName) throws  SQLException{
+    try(Connection conn = DatabaseConnection.getConnection()) {
+        String sqlOrder = "UPDATE trackstudent SET stud_last_name=? WHERE stud_number =?;";
+        try(PreparedStatement prep = conn.prepareStatement(sqlOrder)){
+            prep.setString(1, newLastName);
+            prep.setString(2, studentID);
+            prep.executeUpdate();
+            System.out.println("First name has been changed");
+            return true;
+        }
+    } catch(SQLException e) {
+        e.printStackTrace();
+    } catch(Exception e) {
+        e.printStackTrace();
+    }
+    return false;
     }
 
     public static boolean deleteStudent(Student student) throws SQLException {
