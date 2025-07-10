@@ -36,16 +36,33 @@
             <Label text="Students list"
                    style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #0077b6;"/>
 
-            <!-- Add Button -->
             <HBox spacing="10" alignment="CENTER_LEFT">
+                <!-- Add button -->
                 <Button text="Add"
                         style="-fx-background-color: #0077b6;
-                           -fx-text-fill: white;
-                           -fx-font-weight: bold;
-                           -fx-background-radius: 10;
-                           -fx-padding: 6 14 6 14;"/>
-            </HBox>
+                   -fx-text-fill: white;
+                   -fx-font-weight: bold;
+                   -fx-background-radius: 10;
+                   -fx-padding: 6 14 6 14;"/>
 
+                <!-- Spacer that pushes the next group to the right -->
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <!-- Search group  -->
+                <HBox spacing="10" alignment="CENTER_RIGHT">
+                    <Label text="Search ID:"
+                           style="-fx-font-size: 14px; -fx-text-fill: #333333;"/>
+                    <TextField fx:id="searchIdField" prefColumnCount="8" promptText="8 digits"
+                               style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: #0077b6;
+                          -fx-border-width: 1.5; -fx-padding: 6 10 6 10; -fx-font-size: 14px;"/>
+                    <Button text="Search"
+                            style="-fx-background-color: #0077b6;
+                       -fx-text-fill: white;
+                       -fx-font-weight: bold;
+                       -fx-background-radius: 10;
+                       -fx-padding: 6 14 6 14;"/>
+                </HBox>
+            </HBox>
 
             <!-- TableView -->
             <TableView fx:id="studentTable" prefHeight="400" maxWidth="750">

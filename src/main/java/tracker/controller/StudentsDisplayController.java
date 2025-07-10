@@ -57,6 +57,9 @@ public class StudentsDisplayController implements Initializable {
     @FXML
     private Pagination pagination;
 
+    @FXML
+    private TextField searchIdField;
+
     private static final int ROWS_PER_PAGE = 10;
     private ObservableList<Student> allStudents;
 
