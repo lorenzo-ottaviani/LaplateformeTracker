@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 
 import tracker.DAO.StudentDAO;
 import tracker.model.Student;
-import java.sql.Date;
+
 import java.sql.SQLException;
 
 import java.io.IOException;
@@ -47,7 +47,7 @@ public class StudentsDisplayController implements Initializable {
     private TableColumn<Student, Double> colAverageGrade;
 
     @FXML
-    private TableColumn<Student, Void> colSelect;
+    private TableColumn<Student, Void> colEdit;
 
     @FXML
     private TableColumn<Student, Void> colDelete;
@@ -58,13 +58,13 @@ public class StudentsDisplayController implements Initializable {
     private final static int ROWS_PER_PAGE = 10;
     private ObservableList<Student> allStudents;
 
-    public void setStudentData(List<Student> students) {
-        this.allStudents = FXCollections.observableArrayList(students);
-
-        int pageCount = (int) Math.ceil((double) allStudents.size() / ROWS_PER_PAGE);
-        pagination.setPageCount(Math.max(pageCount, 1));
-        pagination.setPageFactory(this::createPage);
-    }
+//    public void setStudentData(List<Student> students) {
+//        this.allStudents = FXCollections.observableArrayList(students);
+//
+//        int pageCount = (int) Math.ceil((double) allStudents.size() / ROWS_PER_PAGE);
+//        pagination.setPageCount(Math.max(pageCount, 1));
+//        pagination.setPageFactory(this::createPage);
+//    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -102,7 +102,7 @@ public class StudentsDisplayController implements Initializable {
         colStudentNumber.setCellValueFactory(cell -> cell.getValue().studentNumberProperty());
         colEducationLevel.setCellValueFactory(cell -> cell.getValue().educationLevelProperty());
         colAverageGrade.setCellValueFactory(cell -> cell.getValue().averageGradeProperty().asObject());
-        addSelectButtonToTable();
+        addEditButtonToTable();
         addDeleteButtonToTable();
 
         // Configure pagination
@@ -118,13 +118,13 @@ public class StudentsDisplayController implements Initializable {
         return new Label(""); // Required by Pagination, but not used for display
     }
 
-    private void addSelectButtonToTable() {
-        colSelect.setCellFactory(param -> new TableCell<>() {
-            private final Button selectButton = new Button("Select");
+    private void addEditButtonToTable() {
+        colEdit.setCellFactory(param -> new TableCell<>() {
+            private final Button editButton = new Button("Edit");
 
             {
-                selectButton.setStyle("-fx-background-color: #228B22; -fx-text-fill: white; -fx-background-radius: 8;");
-                selectButton.setOnAction(event -> {
+                editButton.setStyle("-fx-background-color: #228B22; -fx-text-fill: white; -fx-background-radius: 8;");
+                editButton.setOnAction(event -> {
                     Student selectedStudent = getTableView().getItems().get(getIndex());
                     openStudentManagerView(selectedStudent);
                 });
@@ -136,7 +136,7 @@ public class StudentsDisplayController implements Initializable {
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    setGraphic(selectButton);
+                    setGraphic(editButton);
                 }
             }
         });

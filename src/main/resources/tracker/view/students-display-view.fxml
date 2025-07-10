@@ -36,7 +36,7 @@
             <Label text="Students list"
                    style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #0077b6;"/>
 
-            <!-- CRUD Buttons -->
+            <!-- Add Button -->
             <HBox spacing="10" alignment="CENTER_LEFT">
                 <Button text="Add"
                         style="-fx-background-color: #0077b6;
@@ -56,7 +56,7 @@
                     <TableColumn fx:id="colStudentNumber" text="Student ID" prefWidth="100"/>
                     <TableColumn fx:id="colEducationLevel" text="Level" prefWidth="100"/>
                     <TableColumn fx:id="colAverageGrade" text="Average Grade" prefWidth="110"/>
-                    <TableColumn fx:id="colSelect" text="Select" prefWidth="69"/>
+                    <TableColumn fx:id="colEdit" text="Edit" prefWidth="69"/>
                     <TableColumn fx:id="colDelete" text="Delete" prefWidth="69"/>
                 </columns>
                 <style>
