@@ -195,7 +195,7 @@ public class StudentsDisplayController implements Initializable {
             controller.setStudentData(student);
 
             Stage stage = new Stage();
-            stage.setTitle("Manage Student");
+            stage.setTitle("Student Editor");
             stage.setScene(new Scene(root, 600, 400));
             stage.show();
 

@@ -3,67 +3,45 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
-<?import javafx.geometry.Pos?>
 
-<BorderPane xmlns:fx="http://javafx.com/fxml"
-            fx:controller="tracker.controller.StudentManagerController"
-            prefWidth="800" prefHeight="600"
-            style="-fx-background-color: #f0f0f0;">
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="tracker.controller.StudentManagerController">
 
-    <!-- Top bar with title and back button -->
-    <top>
-        <HBox spacing="10" alignment="TOP_CENTER">
-            <padding>
-                <Insets top="20" right="20" left="20" bottom="10"/>
-            </padding>
-            <Label text="Student Manager"
-                   style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #0077b6;"
-                   HBox.hgrow="ALWAYS"/>
-        </HBox>
-    </top>
-
-    <!-- Editable student data section -->
     <center>
-        <VBox alignment="TOP_CENTER" spacing="20">
+        <VBox spacing="12" alignment="TOP_CENTER">
             <padding>
-                <Insets top="30" left="30" right="30"/>
+                <Insets top="20" right="20" bottom="20" left="20"/>
             </padding>
 
-            <GridPane hgap="10" vgap="12">
-                <columnConstraints>
-                    <ColumnConstraints percentWidth="16.6"/>
-                    <ColumnConstraints percentWidth="16.6"/>
-                    <ColumnConstraints percentWidth="16.6"/>
-                    <ColumnConstraints percentWidth="16.6"/>
-                    <ColumnConstraints percentWidth="16.6"/>
-                    <ColumnConstraints percentWidth="16.6"/>
-                </columnConstraints>
+            <GridPane hgap="20" vgap="15">
 
-                <!-- Row 1: Current data -->
-                <Label fx:id="colFirstNameLabel" text="First Name" GridPane.columnIndex="0" />
-                <Label fx:id="colLastNameLabel" text="Last Name" GridPane.columnIndex="1" />
-                <Label fx:id="colBirthDateLabel" text="Birth Date" GridPane.columnIndex="2" />
-                <Label fx:id="colStudentNumberLabel" text="Student Number" GridPane.columnIndex="3" />
-                <Label fx:id="colEducationLevelLabel" text="Education Level" GridPane.columnIndex="4" />
-                <Label fx:id="colAverageGradeLabel" text="Average Grade" GridPane.columnIndex="5" />
+                <!-- ROW 0 -->
+                <Label text="First Name" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                <Label text="Last Name" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                <Label text="Birth Date" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
 
-                <!-- Row 2: Editable fields -->
-                <TextField fx:id="inputFirstName" promptText="New first name" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-                <TextField fx:id="inputLastName" promptText="New last name" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                <!-- ROW 1 -->
+                <TextField fx:id="inputFirstName" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                <TextField fx:id="inputLastName" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
                 <DatePicker fx:id="inputBirthDate" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
-                <TextField fx:id="inputStudentNumber" promptText="New number" GridPane.rowIndex="1" GridPane.columnIndex="3"/>
-                <TextField fx:id="inputEducationLevel" promptText="New level" GridPane.rowIndex="1" GridPane.columnIndex="4"/>
-                <TextField fx:id="inputAverageGrade" promptText="New grade" GridPane.rowIndex="1" GridPane.columnIndex="5"/>
 
-                <!-- Row 3: Submit buttons -->
-                <Button text="Submit" onAction="#onSubmitFirstName" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-                <Button text="Submit" onAction="#onSubmitLastName" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
-                <Button text="Submit" onAction="#onSubmitBirthDate" GridPane.rowIndex="2" GridPane.columnIndex="2"/>
-                <Button text="Submit" onAction="#onSubmitStudentNumber" GridPane.rowIndex="2" GridPane.columnIndex="3"/>
-                <Button text="Submit" onAction="#onSubmitEducationLevel" GridPane.rowIndex="2" GridPane.columnIndex="4"/>
-                <Button text="Submit" onAction="#onSubmitAverageGrade" GridPane.rowIndex="2" GridPane.columnIndex="5"/>
+                <!-- ROW 2 -->
+                <Label text="Student Number" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                <Label text="Education Level" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+                <Label text="Average Grade" GridPane.rowIndex="2" GridPane.columnIndex="2"/>
+
+                <!-- ROW 3 -->
+                <TextField fx:id="inputStudentNumber" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+                <TextField fx:id="inputEducationLevel" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+                <TextField fx:id="inputAverageGrade" GridPane.rowIndex="3" GridPane.columnIndex="2"/>
+
             </GridPane>
 
+            <HBox spacing="20" alignment="CENTER">
+                <Button text="← Back" onAction="#onBackButtonClick"/>
+                <Button text="✅ Save All" onAction="#onSaveAllClick"/>
+            </HBox>
         </VBox>
     </center>
 </BorderPane>
