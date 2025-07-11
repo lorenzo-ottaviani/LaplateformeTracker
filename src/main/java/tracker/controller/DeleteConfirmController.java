@@ -13,6 +13,10 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
+/**
+ * Controller class for the delete confirmation dialog.
+ * It handles user confirmation before deleting a student and notifies the main display controller to refresh.
+ */
 public class DeleteConfirmController implements Initializable {
 
     @FXML
@@ -25,58 +29,75 @@ public class DeleteConfirmController implements Initializable {
     private Button cancelButton;
 
     private Student student;
-
     private StudentsDisplayController displayController;
 
+    /**
+     * Sets the student to be deleted and the controller that needs to be refreshed after deletion.
+     *
+     * @param student the student to be deleted
+     * @param controller the controller to be refreshed after deletion
+     */
     public void setStudent(Student student, StudentsDisplayController controller) {
         this.student = student;
         this.displayController = controller;
-        studentNameLabel.setText("Voulez-vous supprimer " + student.getStudentNumber() + " ?");
+        studentNameLabel.setText("Do you want to delete student #" + student.getStudentNumber() + "?");
     }
 
-
+    /**
+     * Initializes the controller by setting up button actions.
+     *
+     * @param location the location used to resolve relative paths
+     * @param resources the resources used to localize the root object
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        confirmButton.setOnAction(e -> {
-            try {
-                boolean deleted = StudentDAO.deleteStudent(student);
-                if (deleted && displayController != null) {
-                    displayController.refreshStudentTable();
-                }
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-            Stage stage = (Stage) confirmButton.getScene().getWindow();
-            stage.close();
-        });
-
-        cancelButton.setOnAction(event -> closeWindow());
+        confirmButton.setOnAction(e -> handleDelete());
+        cancelButton.setOnAction(e -> closeWindow());
     }
 
+    /**
+     * Handles the deletion of the student.
+     * It shows a success or error alert depending on the outcome and refreshes the display if needed.
+     */
     private void handleDelete() {
         if (student != null) {
             try {
                 boolean success = StudentDAO.deleteStudent(student);
                 if (success) {
-                    showAlert("Succès", "L'élève a été supprimé.", Alert.AlertType.INFORMATION);
+                    showAlert("Success", "Student was successfully deleted.", Alert.AlertType.INFORMATION);
+                    if (displayController != null) {
+                        displayController.refreshStudentTable();
+                    }
                 } else {
-                    showAlert("Erreur", "Échec de la suppression de l'élève.", Alert.AlertType.ERROR);
+                    showAlert("Error", "Failed to delete student.", Alert.AlertType.ERROR);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
-                showAlert("Exception", e.getMessage(), Alert.AlertType.ERROR);
+                showAlert("SQL Error", e.getMessage(), Alert.AlertType.ERROR);
+            } finally {
+                closeWindow();
             }
-            closeWindow();
         }
     }
 
+    /**
+     * Displays an alert with the specified parameters.
+     *
+     * @param title the title of the alert
+     * @param content the content/message of the alert
+     * @param type the type of the alert (INFORMATION, ERROR, etc.)
+     */
     private void showAlert(String title, String content, Alert.AlertType type) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
+        alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();
     }
 
+    /**
+     * Closes the current window.
+     */
     private void closeWindow() {
         Stage stage = (Stage) confirmButton.getScene().getWindow();
         stage.close();
