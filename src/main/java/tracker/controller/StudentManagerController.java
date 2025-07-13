@@ -9,6 +9,7 @@ import tracker.model.Student;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
@@ -38,10 +39,14 @@ public class StudentManagerController implements Initializable {
         // Display current values in labels
         colFirstNameLabel.setText(student.firstNameProperty().get());
         colLastNameLabel.setText(student.lastNameProperty().get());
-        colBirthDateLabel.setText(student.birthDateProperty().get().toString());
         colStudentNumberLabel.setText(student.studentNumberProperty().get());
         colEducationLevelLabel.setText(student.educationLevelProperty().get());
         colAverageGradeLabel.setText(String.valueOf(student.averageGradeProperty().get()));
+
+        // Display formated date
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
+        String formattedDate = student.birthDateProperty().get().format(formatter);
+        colBirthDateLabel.setText(formattedDate);
     }
 
     @Override

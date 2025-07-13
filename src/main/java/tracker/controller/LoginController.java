@@ -87,6 +87,11 @@ public class LoginController {
             stage.setScene(scene);
             stage.show();
 
+
+            /* Scene scene = stage.getScene();
+            scene.setRoot(studentsDisplayRoot);
+            stage.show(); */
+
         } catch (IOException e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Navigation Error", "Failed to load the student dashboard.");

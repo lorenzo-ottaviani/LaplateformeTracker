@@ -18,6 +18,7 @@ import java.sql.SQLException;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -106,6 +107,20 @@ public class StudentsDisplayController implements Initializable {
         colEducationLevel.setCellValueFactory(cell -> cell.getValue().educationLevelProperty());
         colAverageGrade.setCellValueFactory(cell -> cell.getValue().averageGradeProperty().asObject());
 
+        // Format and display the birthdate as d/M/yyyy (e.g., 5/12/2000)
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
+        colBirthDate.setCellFactory(column -> new TableCell<>() {
+            @Override
+            protected void updateItem(LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(formatter.format(item));
+                }
+            }
+        });
+
         // Add buttons columns
         addEditButtonToTable();
         addDeleteButtonToTable();
@@ -115,6 +130,7 @@ public class StudentsDisplayController implements Initializable {
         pagination.setPageCount(Math.max(pageCount, 1));
         pagination.setPageFactory(this::createPage);
     }
+
 
     /**
      * Creates a page of the table based on the page index.
