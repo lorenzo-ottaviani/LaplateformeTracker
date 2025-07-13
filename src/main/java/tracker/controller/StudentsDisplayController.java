@@ -260,10 +260,8 @@ public class StudentsDisplayController implements Initializable {
             Parent loginRoot = fxmlLoader.load();
 
             Stage stage = (Stage) studentTable.getScene().getWindow();
-
-            Scene scene = new Scene(loginRoot, 800, 600);
-            stage.setScene(scene);
-            stage.show();
+            Scene scene = stage.getScene();
+            scene.setRoot(loginRoot);
 
         } catch (IOException e) {
             e.printStackTrace();

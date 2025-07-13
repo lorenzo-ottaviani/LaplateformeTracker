@@ -48,10 +48,8 @@ public class RegisterController {
             Parent loginRoot = fxmlLoader.load();
 
             Stage stage = (Stage) emailField.getScene().getWindow();
-            Scene scene = new Scene(loginRoot, 800, 600);
-
-            stage.setScene(scene);
-            stage.show();
+            Scene scene = stage.getScene();
+            scene.setRoot(loginRoot);
 
         } catch (IOException e) {
             e.printStackTrace();
