@@ -14,6 +14,8 @@ public class  TrackerApp extends Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(TrackerApp.class.getResource("/tracker/view/login-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 800, 600);
+        scene.getStylesheets().add(TrackerApp.class.getResource("/tracker/style/style.css").toExternalForm());
+
         stage.setTitle("TRACK YOU !");
         stage.setScene(scene);
         stage.show();

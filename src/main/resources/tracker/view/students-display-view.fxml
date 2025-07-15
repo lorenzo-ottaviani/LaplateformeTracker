@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.geometry.Insets?>
-<?import javafx.geometry.Pos?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="tracker.controller.StudentsDisplayController"
             prefWidth="800" prefHeight="600"
-            style="-fx-background-color: #f0f0f0;">
+            styleClass="root">
 
-    <!-- Top Bar with Back Button -->
+    <!-- Top bar -->
     <top>
         <HBox alignment="TOP_RIGHT" spacing="10">
             <padding>
@@ -17,55 +16,36 @@
             </padding>
             <Button text="Logout"
                     onAction="#onLogoutButtonClick"
-                    style="-fx-background-color: #0077b6;
-                           -fx-text-fill: white;
-                           -fx-font-weight: bold;
-                           -fx-background-radius: 10;
-                           -fx-padding: 6 14 6 14;"/>
+                    styleClass="small-button"/>
         </HBox>
     </top>
 
-    <!-- Center Content -->
+    <!-- Main content -->
     <center>
-        <VBox alignment="TOP_CENTER" spacing="10">
-            <padding>
-                <Insets top="10" right="20" bottom="10" left="20"/>
-            </padding>
+        <VBox alignment="TOP_CENTER" spacing="10" styleClass="content-container">
 
             <!-- Title -->
-            <Label text="Students list"
-                   style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #0077b6;"/>
+            <Label text="Students list" styleClass="section-title"/>
 
+            <!-- Toolbar -->
             <HBox spacing="10" alignment="CENTER_LEFT">
-                <!-- Add button -->
-                <Button text="Add"
-                        style="-fx-background-color: #0077b6;
-                   -fx-text-fill: white;
-                   -fx-font-weight: bold;
-                   -fx-background-radius: 10;
-                   -fx-padding: 6 14 6 14;"/>
 
-                <!-- Spacer that pushes the next group to the right -->
+                <Button text="Add" styleClass="small-button"/>
+
                 <Region HBox.hgrow="ALWAYS"/>
 
-                <!-- Search group  -->
+                <!-- Search -->
                 <HBox spacing="10" alignment="CENTER_RIGHT">
-                    <Label text="Search ID:"
-                           style="-fx-font-size: 14px; -fx-text-fill: #333333;"/>
-                    <TextField fx:id="searchIdField" prefColumnCount="8" promptText="8 digits"
-                               style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: #0077b6;
-                          -fx-border-width: 1.5; -fx-padding: 6 10 6 10; -fx-font-size: 14px;"/>
-                    <Button text="Search"
-                            style="-fx-background-color: #0077b6;
-                       -fx-text-fill: white;
-                       -fx-font-weight: bold;
-                       -fx-background-radius: 10;
-                       -fx-padding: 6 14 6 14;"/>
+                    <Label text="Search ID:" styleClass="search-label"/>
+                    <TextField fx:id="searchIdField" promptText="8 digits"
+                               prefColumnCount="8"
+                               styleClass="input-field"/>
+                    <Button text="Search" styleClass="small-button"/>
                 </HBox>
             </HBox>
 
-            <!-- TableView -->
-            <TableView fx:id="studentTable" prefHeight="400" maxWidth="750">
+            <!-- Table -->
+            <TableView fx:id="studentTable" prefHeight="400" maxWidth="750" styleClass="table-view">
                 <columns>
                     <TableColumn fx:id="colFirstName" text="First Name" prefWidth="100"/>
                     <TableColumn fx:id="colLastName" text="Last Name" prefWidth="100"/>
@@ -76,15 +56,11 @@
                     <TableColumn fx:id="colEdit" text="Edit" prefWidth="69"/>
                     <TableColumn fx:id="colDelete" text="Delete" prefWidth="69"/>
                 </columns>
-                <style>
-                    -fx-control-inner-background-alt: #e9f5fb;
-                </style>
             </TableView>
 
             <!-- Pagination -->
-            <Pagination fx:id="pagination"
-                        maxPageIndicatorCount="5"
-                        style="-fx-padding: 10 0 0 0;"/>
+            <Pagination fx:id="pagination" maxPageIndicatorCount="5" styleClass="pagination"/>
         </VBox>
     </center>
+
 </BorderPane>

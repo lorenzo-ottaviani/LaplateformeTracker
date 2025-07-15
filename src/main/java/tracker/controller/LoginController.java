@@ -63,9 +63,8 @@ public class LoginController {
             Parent registerRoot = fxmlLoader.load();
 
             Stage stage = (Stage) userField.getScene().getWindow();
-            Scene scene = new Scene(registerRoot, 800, 600);
-            stage.setScene(scene);
-            stage.show();
+            Scene scene = stage.getScene();
+            scene.setRoot(registerRoot);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -83,9 +82,8 @@ public class LoginController {
             Parent studentsDisplayRoot = fxmlLoader.load();
 
             Stage stage = (Stage) userField.getScene().getWindow();
-            Scene scene = new Scene(studentsDisplayRoot, 800, 600);
-            stage.setScene(scene);
-            stage.show();
+            Scene scene = stage.getScene();
+            scene.setRoot(studentsDisplayRoot);
 
         } catch (IOException e) {
             e.printStackTrace();

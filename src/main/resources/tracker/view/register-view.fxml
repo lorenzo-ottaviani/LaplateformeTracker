@@ -21,56 +21,46 @@
     </padding>
 
     <!-- Register Title -->
-    <VBox maxWidth="450" alignment="CENTER" style="-fx-padding: 0 0 40 0;">
-        <Label text="REGISTER"
-               style="-fx-font-size: 42px; -fx-font-weight: bold; -fx-text-fill: #0077b6;"
-               maxWidth="350"
-               alignment="CENTER"/>
+    <VBox styleClass="title-container">
+        <Label text="REGISTER" styleClass="title-label"/>
     </VBox>
 
     <!-- Email Section -->
-    <HBox spacing="20" alignment="CENTER_LEFT" maxWidth="450" prefHeight="40">
-        <Label text="Email" style="-fx-font-size: 14px; -fx-text-fill: #333333;" prefWidth="140"/>
+    <HBox styleClass="form-section" maxWidth="450">
+        <Label text="Email" styleClass="form-label" prefWidth="140"/>
         <TextField fx:id="emailField" prefColumnCount="20" promptText="Enter email"
-                   style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: #0077b6;
-                   -fx-border-width: 1.5; -fx-padding: 6 10 6 10;"/>
+                   styleClass="input-field"/>
     </HBox>
 
     <!-- Password Section -->
-    <HBox spacing="20" alignment="CENTER_LEFT" maxWidth="450" prefHeight="40">
-        <Label text="Password" style="-fx-font-size: 14px; -fx-text-fill: #333333;" prefWidth="140"/>
+    <HBox styleClass="form-section" maxWidth="450">
+        <Label text="Password" styleClass="form-label" prefWidth="140"/>
         <PasswordField fx:id="passwordField" prefColumnCount="20" promptText="Enter password"
-                       style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: #0077b6;
-                       -fx-border-width: 1.5; -fx-padding: 6 10 6 10;"/>
+                       styleClass="input-field"/>
     </HBox>
     <!-- Confirm Password Section -->
-    <HBox spacing="20" alignment="CENTER_LEFT" maxWidth="450" prefHeight="40">
-        <Label text="Confirm Password" style="-fx-font-size: 14px; -fx-text-fill: #333333;" prefWidth="140"/>
+    <HBox styleClass="form-section" maxWidth="450">
+        <Label text="Confirm Password" styleClass="form-label" prefWidth="140"/>
         <PasswordField fx:id="confirmPasswordField" prefColumnCount="20" promptText="Confirm password"
-                       style="-fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: #0077b6;
-                       -fx-border-width: 1.5; -fx-padding: 6 10 6 10;"/>
+                       styleClass="input-field"/>
     </HBox>
 
     <!-- Registration Error Label Section -->
-    <VBox maxWidth="450" alignment="CENTER" style="-fx-padding: 0 0 40 0;">
+    <VBox maxWidth="450" alignment="CENTER" style="-fx-padding: 0 0 20 0;">
         <Label fx:id="registrationErrorLabel"
                visible="false"
                wrapText="true"
-               style="-fx-font-size: 12px; -fx-font-weight: bold;"
-               maxWidth="350"
-               alignment="CENTER"/>
+               styleClass="error-label"/>
     </VBox>
 
     <!-- Buttons Section -->
-    <HBox spacing="30" alignment="CENTER" maxWidth="350" style="-fx-padding: 20 0 0 0;">
+    <HBox styleClass="button-section" maxWidth="450">
         <Button text="Login"
-                style="-fx-background-color: transparent; -fx-text-fill: #0077b6; -fx-font-weight: bold;
-                -fx-border-color: #0077b6; -fx-border-radius: 10; -fx-background-radius: 10; -fx-padding: 10 30 10 30;"
+                styleClass="secondary-button"
                 onAction="#onLoginButtonClick"
                 maxWidth="120"/>
         <Button text="Register"
-                style="-fx-background-color: #0077b6; -fx-text-fill: white; -fx-font-weight: bold;
-                -fx-background-radius: 10; -fx-padding: 10 30 10 30;"
+                styleClass="primary-button"
                 onAction="#onRegisterButtonClick"
                 maxWidth="120"/>
     </HBox>

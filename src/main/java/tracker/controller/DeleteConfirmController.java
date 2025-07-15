@@ -40,7 +40,11 @@ public class DeleteConfirmController implements Initializable {
     public void setStudent(Student student, StudentsDisplayController controller) {
         this.student = student;
         this.displayController = controller;
-        studentNameLabel.setText("Do you want to delete student #" + student.getStudentNumber() + "?");
+        studentNameLabel.setText("Do you want to delete the student \""
+                + student.firstNameProperty().get() + " "
+                + student.lastNameProperty().get()
+                + "\" with student number '"
+                + student.getStudentNumber() + "'?");
     }
 
     /**
