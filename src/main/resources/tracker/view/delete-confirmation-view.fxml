@@ -3,7 +3,6 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
-<?import javafx.geometry.Pos?>
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             fx:controller="tracker.controller.DeleteConfirmController"
@@ -16,20 +15,19 @@
                 <Insets top="40" left="40" right="40" bottom="40"/>
             </padding>
 
-            <Label text="Confirmation de suppression"
+            <Label text="Delete Confirmation"
                    style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #b00020;"/>
 
             <Label fx:id="studentNameLabel"
-                   text="Êtes-vous sûr de vouloir supprimer cet élève ?"
                    wrapText="true"
                    style="-fx-font-size: 16px; -fx-text-fill: #333;"/>
 
             <HBox spacing="20" alignment="CENTER">
-                <Button fx:id="cancelButton" text="Annuler"
+                <Button fx:id="cancelButton" text="Cancel"
                         style="-fx-background-color: #ccc; -fx-text-fill: #333;
                         -fx-background-radius: 8; -fx-padding: 8 20 8 20;"/>
 
-                <Button fx:id="confirmButton" text="Confirmer"
+                <Button fx:id="confirmButton" text="Confirm"
                         style="-fx-background-color: #b00020; -fx-text-fill: white;
                         -fx-background-radius: 8; -fx-padding: 8 20 8 20;"/>
             </HBox>
