@@ -20,11 +20,8 @@ import java.sql.SQLException;
  */
 public class LoginController {
 
-    @FXML
-    private TextField userField;
-
-    @FXML
-    private PasswordField passwordField;
+    @FXML private TextField userField;
+    @FXML private PasswordField passwordField;
 
     /**
      * Triggered when the login button is clicked.
@@ -105,4 +102,5 @@ public class LoginController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
 }

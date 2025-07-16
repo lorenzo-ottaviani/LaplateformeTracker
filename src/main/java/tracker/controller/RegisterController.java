@@ -21,21 +21,10 @@ import java.io.IOException;
  */
 public class RegisterController {
 
-    /** TextField for user's email input. */
-    @FXML
-    private TextField emailField;
-
-    /** PasswordField for user's password input. */
-    @FXML
-    private PasswordField passwordField;
-
-    /** PasswordField for confirming user's password. */
-    @FXML
-    private PasswordField confirmPasswordField;
-
-    /** Label to display validation or registration error messages. */
-    @FXML
-    private Label registrationErrorLabel;
+    @FXML private TextField emailField;
+    @FXML private PasswordField passwordField;
+    @FXML private PasswordField confirmPasswordField;
+    @FXML private Label registrationErrorLabel;
 
     /**
      * Handles the event when the user clicks the "Back to Login" button.

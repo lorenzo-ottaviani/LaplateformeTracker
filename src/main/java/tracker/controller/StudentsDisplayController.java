@@ -28,42 +28,28 @@ import java.util.ResourceBundle;
  */
 public class StudentsDisplayController implements Initializable {
 
-    @FXML
-    private TableView<Student> studentTable;
-
-    @FXML
-    private TableColumn<Student, String> colFirstName;
-
-    @FXML
-    private TableColumn<Student, String> colLastName;
-
-    @FXML
-    private TableColumn<Student, LocalDate> colBirthDate;
-
-    @FXML
-    private TableColumn<Student, String> colStudentNumber;
-
-    @FXML
-    private TableColumn<Student, String> colEducationLevel;
-
-    @FXML
-    private TableColumn<Student, Double> colAverageGrade;
-
-    @FXML
-    private TableColumn<Student, Void> colEdit;
-
-    @FXML
-    private TableColumn<Student, Void> colDelete;
-
-    @FXML
-    private Pagination pagination;
-
-    @FXML
-    private TextField searchIdField;
-
+    // === Constants ===
     private static final int ROWS_PER_PAGE = 10;
+
+    // === Internal data ===
     private ObservableList<Student> allStudents;
 
+    // === FXML UI components ===
+    @FXML private TableView<Student> studentTable;
+    @FXML private Pagination pagination;
+    @FXML private TextField searchIdField;
+
+    // === FXML Table columns ===
+    @FXML private TableColumn<Student, String> colFirstName;
+    @FXML private TableColumn<Student, String> colLastName;
+    @FXML private TableColumn<Student, LocalDate> colBirthDate;
+    @FXML private TableColumn<Student, String> colStudentNumber;
+    @FXML private TableColumn<Student, String> colEducationLevel;
+    @FXML private TableColumn<Student, Double> colAverageGrade;
+    @FXML private TableColumn<Student, Void> colEdit;
+    @FXML private TableColumn<Student, Void> colDelete;
+
+    // === Initialization ===
     /**
      * Initializes the controller after the FXML fields are injected.
      * Loads students from the database, initializes the table and pagination.
@@ -131,7 +117,7 @@ public class StudentsDisplayController implements Initializable {
         pagination.setPageFactory(this::createPage);
     }
 
-
+    // === Pagination handling ===
     /**
      * Creates a page of the table based on the page index.
      *
@@ -146,7 +132,24 @@ public class StudentsDisplayController implements Initializable {
         return new Label(""); // Required by Pagination but not displayed
     }
 
+    /**
+     * Refreshes the student table data from the database and updates pagination.
+     */
+    public void refreshStudentTable() {
+        try {
+            List<Student> updatedList = StudentDAO.selectAll();
+            allStudents.setAll(updatedList);
 
+            int pageCount = (int) Math.ceil((double) allStudents.size() / ROWS_PER_PAGE);
+            pagination.setPageCount(Math.max(pageCount, 1));
+            pagination.setPageFactory(this::createPage);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // === Table button setup ===
     /**
      * Adds an Edit button to each row of the table.
      * Clicking it opens the Student Manager view to edit student details.
@@ -187,7 +190,7 @@ public class StudentsDisplayController implements Initializable {
                 deleteButton.setStyle("-fx-background-color: #ff0000; -fx-text-fill: white; -fx-background-radius: 8;");
                 deleteButton.setOnAction(event -> {
                     Student selectedStudent = getTableView().getItems().get(getIndex());
-                    openDeleteConfirmation(selectedStudent);
+                    openDeleteConfirmationView(selectedStudent);
                 });
             }
 
@@ -203,6 +206,7 @@ public class StudentsDisplayController implements Initializable {
         });
     }
 
+    // === View opening methods ===
     /**
      * Opens the Student Manager view to edit the selected student.
      *
@@ -227,11 +231,11 @@ public class StudentsDisplayController implements Initializable {
     }
 
     /**
-     * Opens the Delete Confirmation dialog for the selected student.
+     * Opens the Delete Confirmation view for the selected student.
      *
      * @param student the student to confirm deletion for
      */
-    private void openDeleteConfirmation(Student student) {
+    private void openDeleteConfirmationView(Student student) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/tracker/view/delete-confirmation-view.fxml"));
             Parent root = loader.load();
@@ -249,6 +253,7 @@ public class StudentsDisplayController implements Initializable {
         }
     }
 
+    // === UI Event handlers ===
     /**
      * Handles the Logout button click event.
      * Loads the login view and replaces the current scene.
@@ -264,23 +269,6 @@ public class StudentsDisplayController implements Initializable {
             scene.setRoot(loginRoot);
 
         } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Refreshes the student table data from the database and updates pagination.
-     */
-    public void refreshStudentTable() {
-        try {
-            List<Student> updatedList = StudentDAO.selectAll();
-            allStudents.setAll(updatedList);
-
-            int pageCount = (int) Math.ceil((double) allStudents.size() / ROWS_PER_PAGE);
-            pagination.setPageCount(Math.max(pageCount, 1));
-            pagination.setPageFactory(this::createPage);
-
-        } catch (SQLException e) {
             e.printStackTrace();
         }
     }

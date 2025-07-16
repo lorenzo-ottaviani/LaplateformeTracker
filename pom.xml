@@ -95,6 +95,31 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.5.0</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                            <goal>javadoc</goal>
+                        </goals>
+                        <phase>package</phase>
+                        <configuration>
+                            <source>24</source>
+                            <encoding>UTF-8</encoding>
+                            <show>private</show>
+                            <failOnError>false</failOnError>
+                            <doctitle>Documentation API - PlateformeTracker</doctitle>
+                            <windowtitle>PlateformeTracker API Documentation</windowtitle>
+                            <outputDirectory>${project.build.directory}/site/apidocs</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 </project>

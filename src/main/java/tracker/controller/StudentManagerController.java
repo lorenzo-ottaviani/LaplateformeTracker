@@ -15,7 +15,10 @@ import java.util.ResourceBundle;
 
 public class StudentManagerController implements Initializable {
 
-    // Labels (to display current data above editable fields)
+    // === Internal data ===
+    private Student student;
+
+    // === FXML Labels ===
     @FXML private Label colFirstNameLabel;
     @FXML private Label colLastNameLabel;
     @FXML private Label colBirthDateLabel;
@@ -23,15 +26,13 @@ public class StudentManagerController implements Initializable {
     @FXML private Label colEducationLevelLabel;
     @FXML private Label colAverageGradeLabel;
 
-    // Editable input fields
+    // === FXML Input fields ===
     @FXML private TextField inputFirstName;
     @FXML private TextField inputLastName;
     @FXML private DatePicker inputBirthDate;
     @FXML private TextField inputStudentNumber;
     @FXML private TextField inputEducationLevel;
     @FXML private TextField inputAverageGrade;
-
-    private Student student;
 
     public void setStudentData(Student student) {
         this.student = student;
