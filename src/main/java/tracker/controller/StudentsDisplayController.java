@@ -255,6 +255,47 @@ public class StudentsDisplayController implements Initializable {
 
     // === UI Event handlers ===
     /**
+     * Triggered when the Add button is clicked.
+     * Opens a new window for adding a new student entry via the Student Manager view.
+     * The form will be empty to allow creation of a fresh student record.
+     */
+    @FXML
+    protected void onAddButtonClick() {}
+
+    /**
+     * Triggered when the Search button is clicked.
+     * Searches for a student by the entered student number.
+     * If found, opens the Student Manager view with the student's data.
+     * If not found or on error, displays an appropriate alert to the user.
+     */
+    @FXML
+    protected void onSearchButtonClick() {
+        String studentNumber = searchIdField.getText().trim();
+
+        if (studentNumber.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Search Failed", "Please enter a student number.");
+            return;
+        }
+
+        try {
+            Student student = StudentDAO.findByStudentNumber(studentNumber);
+
+            if (student != null) {
+                openStudentManagerView(student);
+            } else {
+                showAlert(Alert.AlertType.WARNING, "Search Failed",
+                        "No student found with the given student number.");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Database Error",
+                    "An error occurred while searching for the student.");
+        }
+    }
+
+
+    /**
      * Handles the Logout button click event.
      * Loads the login view and replaces the current scene.
      */
@@ -271,6 +312,22 @@ public class StudentsDisplayController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    // === Utility Methods ===
+    /**
+     * Utility method to show a JavaFX alert dialog.
+     *
+     * @param type    The type of alert (e.g., ERROR, WARNING, INFORMATION)
+     * @param title   The title of the alert dialog
+     * @param message The message content shown in the alert
+     */
+    private void showAlert(Alert.AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
 }

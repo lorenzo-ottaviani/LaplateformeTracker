@@ -6,6 +6,7 @@ import tracker.model.Student;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -48,6 +49,38 @@ public class StudentDAO {
     }
 
     /**
+     * Finds a student by their student number.
+     *
+     * @param studentNumber the student number to search for
+     * @return the matching Student object, or null if not found
+     * @throws SQLException if a database access error occurs
+     */
+    public static Student findByStudentNumber(String studentNumber) throws SQLException {
+        String sql = "SELECT * FROM trackstudent WHERE stud_number = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, studentNumber);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                String firstName = rs.getString("stud_first_name");
+                String lastName = rs.getString("stud_last_name");
+                Date birthDate = rs.getDate("stud_birth_date");
+                String educationLevel = rs.getString("stud_level");
+                double averageGrade = rs.getDouble("stud_average_grade");
+
+                return new Student(firstName, lastName, birthDate.toLocalDate(),
+                        studentNumber, educationLevel, averageGrade);
+            } else {
+                return null;
+            }
+        }
+    }
+
+
+    /**
      * Deletes a student from the database based on their student number.
      *
      * @param student the student to delete
@@ -72,7 +105,7 @@ public class StudentDAO {
      * @return true if the update was successful, false otherwise
      * @throws SQLException if a database access error occurs
      */
-    public static boolean updateFirstNameStudent(String studentID, String newFirstName) throws SQLException {
+    public static boolean updateFirstName(String studentID, String newFirstName) throws SQLException {
         String sql = "UPDATE trackstudent SET stud_first_name = ? WHERE stud_number = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -96,7 +129,7 @@ public class StudentDAO {
      * @return true if the update was successful, false otherwise
      * @throws SQLException if a database access error occurs
      */
-    public static boolean updateLastNameStudent(String studentID, String newLastName) throws SQLException {
+    public static boolean updateLastName(String studentID, String newLastName) throws SQLException {
         String sql = "UPDATE trackstudent SET stud_last_name = ? WHERE stud_number = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
@@ -105,6 +138,103 @@ public class StudentDAO {
             stmt.setString(2, studentID);
             stmt.executeUpdate();
             System.out.println("Last name updated successfully.");
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Updates a student's birthdate in the database.
+     *
+     * @param studentID the student number
+     * @param newBirthDate the new birthdate to set
+     * @return true if the update was successful, false otherwise
+     * @throws SQLException if a database access error occurs
+     */
+    public static boolean updateBirthDate(String studentID, LocalDate newBirthDate) throws SQLException {
+        String sql = "UPDATE trackstudent SET stud_birth_date = ? WHERE stud_number = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setDate(1, java.sql.Date.valueOf(newBirthDate));
+            stmt.setString(2, studentID);
+            stmt.executeUpdate();
+            System.out.println("Birth date updated successfully.");
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    /**
+     * Updates a student's number in the database.
+     *
+     * @param studentID the student number
+     * @param newStudentNumber the new student number to set
+     * @return true if the update was successful, false otherwise
+     * @throws SQLException if a database access error occurs
+     */
+    public static boolean updateStudentNumber(String studentID, String newStudentNumber) throws SQLException {
+        String sql = "UPDATE trackstudent SET stud_number = ? WHERE stud_number = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, newStudentNumber);
+            stmt.setString(2, studentID);
+            stmt.executeUpdate();
+            System.out.println("Student number updated successfully.");
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Updates a student's education level in the database.
+     *
+     * @param studentID the student number
+     * @param newEducationLevel the new education level to set
+     * @return true if the update was successful, false otherwise
+     * @throws SQLException if a database access error occurs
+     */
+    public static boolean updateEducationLevel(String studentID, String newEducationLevel) throws SQLException {
+        String sql = "UPDATE trackstudent SET stud_level = ?::level WHERE stud_number = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, newEducationLevel);
+            stmt.setString(2, studentID);
+            stmt.executeUpdate();
+            System.out.println("Education level updated successfully.");
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Updates a student's average grade in the database.
+     *
+     * @param studentID the student number
+     * @param newAverageGrade the new average grade to set
+     * @return true if the update was successful, false otherwise
+     * @throws SQLException if a database access error occurs
+     */
+    public static boolean updateAverageGrade(String studentID, double newAverageGrade) throws SQLException {
+        String sql = "UPDATE trackstudent SET stud_average_grade = ? WHERE stud_number = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setDouble(1, newAverageGrade);
+            stmt.setString(2, studentID);
+            stmt.executeUpdate();
+            System.out.println("Average grade updated successfully.");
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
