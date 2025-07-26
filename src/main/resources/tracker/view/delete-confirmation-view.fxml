@@ -16,7 +16,7 @@
             </padding>
 
             <Label text="Delete Confirmation"
-                   style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #b00020;"/>
+                   style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #b00020;"/>
 
             <Label fx:id="studentNameLabel"
                    wrapText="true"

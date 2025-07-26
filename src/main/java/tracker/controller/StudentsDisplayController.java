@@ -250,6 +250,8 @@ public class StudentsDisplayController implements Initializable {
 
         } catch (IOException e) {
             e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Navigation Error",
+                    "Unable to open the delete confirmation dialog.");
         }
     }
 
@@ -260,7 +262,20 @@ public class StudentsDisplayController implements Initializable {
      * The form will be empty to allow creation of a fresh student record.
      */
     @FXML
-    protected void onAddButtonClick() {}
+    protected void onAddButtonClick() {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/tracker/view/add-student-view.fxml"));
+            Parent loginRoot = fxmlLoader.load();
+
+            Stage stage = (Stage) studentTable.getScene().getWindow();
+            Scene scene = stage.getScene();
+            scene.setRoot(loginRoot);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Navigation Error", "Failed to load the add student screen.");
+        }
+    }
 
     /**
      * Triggered when the Search button is clicked.
@@ -297,7 +312,7 @@ public class StudentsDisplayController implements Initializable {
 
     /**
      * Handles the Logout button click event.
-     * Loads the login view and replaces the current scene.
+     * Switches the current scene to the login view.
      */
     @FXML
     protected void onLogoutButtonClick() {
@@ -311,6 +326,7 @@ public class StudentsDisplayController implements Initializable {
 
         } catch (IOException e) {
             e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Navigation Error", "Failed to load the login screen.");
         }
     }
 
