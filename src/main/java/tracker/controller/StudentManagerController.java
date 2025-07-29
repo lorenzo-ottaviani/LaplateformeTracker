@@ -1,18 +1,19 @@
 package tracker.controller;
 
+import java.net.URL;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.ResourceBundle;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+
 import tracker.DAO.StudentDAO;
 import tracker.model.Student;
-
-import java.net.URL;
-import java.sql.SQLException;
-import java.time.format.DateTimeFormatter;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.ResourceBundle;
 
 public class StudentManagerController implements Initializable {
 
@@ -38,16 +39,16 @@ public class StudentManagerController implements Initializable {
     public void setStudentData(Student student) {
         this.student = student;
 
-        // Display current values in labels
-        colFirstNameLabel.setText(student.firstNameProperty().get());
-        colLastNameLabel.setText(student.lastNameProperty().get());
-        colStudentNumberLabel.setText(student.studentNumberProperty().get());
-        colEducationLevelLabel.setText(student.educationLevelProperty().get());
-        colAverageGradeLabel.setText(String.valueOf(student.averageGradeProperty().get()));
+        // Display current values in labels using getters
+        colFirstNameLabel.setText(student.getFirstName());
+        colLastNameLabel.setText(student.getLastName());
+        colStudentNumberLabel.setText(student.getStudentNumber());
+        colEducationLevelLabel.setText(student.getEducationLevel());
+        colAverageGradeLabel.setText(String.valueOf(student.getAverageGrade()));
 
-        // Display formated date
+        // Display formatted date
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
-        String formattedDate = student.birthDateProperty().get().format(formatter);
+        String formattedDate = student.getBirthDate().format(formatter);
         colBirthDateLabel.setText(formattedDate);
     }
 
@@ -66,7 +67,7 @@ public class StudentManagerController implements Initializable {
         }
 
         StudentDAO.updateFirstName(student.getStudentNumber(), newFirstName);
-        student.firstNameProperty().set(newFirstName);
+        student.setFirstName(newFirstName);
         colFirstNameLabel.setText(newFirstName);
     }
 
@@ -79,7 +80,7 @@ public class StudentManagerController implements Initializable {
         }
 
         StudentDAO.updateLastName(student.getStudentNumber(), newLastName);
-        student.lastNameProperty().set(newLastName);
+        student.setLastName(newLastName);
         colLastNameLabel.setText(newLastName);
     }
 
@@ -92,20 +93,23 @@ public class StudentManagerController implements Initializable {
         }
 
         StudentDAO.updateBirthDate(student.getStudentNumber(), newDate);
-        student.birthDateProperty().set(newDate);
+        student.setBirthDate(newDate);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/M/yyyy");
         colBirthDateLabel.setText(newDate.format(formatter));
     }
 
 
     @FXML
-    private void onSubmitStudentNumber() throws  SQLException {
+    private void onSubmitStudentNumber() throws SQLException {
         String newStudentNumber = inputStudentNumber.getText().trim();
-        if (!newStudentNumber.isEmpty()) {
-            StudentDAO.updateStudentNumber(student.studentNumberProperty().get(), newStudentNumber);
-            student.studentNumberProperty().set(newStudentNumber);
-            colStudentNumberLabel.setText(newStudentNumber);
+        if (!newStudentNumber.matches("\\d{8}")) {
+            showAlert(Alert.AlertType.ERROR, "Invalid Input", "Student number must be exactly 8 digits");
+            return;
         }
+        StudentDAO.updateStudentNumber(student.getStudentNumber(), newStudentNumber);
+        student.setStudentNumber(newStudentNumber);
+        colStudentNumberLabel.setText(newStudentNumber);
+
     }
 
     @FXML
@@ -120,7 +124,7 @@ public class StudentManagerController implements Initializable {
         }
 
         StudentDAO.updateEducationLevel(student.getStudentNumber(), newLevel);
-        student.educationLevelProperty().set(newLevel);
+        student.setEducationLevel(newLevel);
         colEducationLevelLabel.setText(newLevel);
     }
 
@@ -135,7 +139,7 @@ public class StudentManagerController implements Initializable {
             }
 
             StudentDAO.updateAverageGrade(student.getStudentNumber(), newGrade);
-            student.averageGradeProperty().set(newGrade);
+            student.setAverageGrade(newGrade);
             colAverageGradeLabel.setText(String.valueOf(newGrade));
 
         } catch (NumberFormatException e) {

@@ -1,17 +1,18 @@
 package tracker.controller;
 
+import java.net.URL;
+import java.sql.SQLException;
+import java.util.ResourceBundle;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+
 import tracker.DAO.StudentDAO;
 import tracker.model.Student;
-
-import java.net.URL;
-import java.sql.SQLException;
-import java.util.ResourceBundle;
 
 /**
  * Controller class for the delete confirmation dialog.

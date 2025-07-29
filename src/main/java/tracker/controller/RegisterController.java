@@ -1,5 +1,7 @@
 package tracker.controller;
 
+import java.io.IOException;
+
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,10 +12,9 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
 import tracker.DAO.UserDAO;
 import tracker.model.User;
-
-import java.io.IOException;
 
 /**
  * Controller for the registration view (register-view.fxml).
@@ -52,9 +53,9 @@ public class RegisterController {
      */
     @FXML
     protected void onRegisterButtonClick() {
-        String email = emailField.getText();
-        String password = passwordField.getText();
-        String confirmPassword = confirmPasswordField.getText();
+        String email = emailField.getText().trim().toLowerCase();
+        String password = passwordField.getText().trim();
+        String confirmPassword = confirmPasswordField.getText().trim();
 
         registrationErrorLabel.setVisible(false);
 
@@ -68,8 +69,6 @@ public class RegisterController {
 
         try {
             if (UserDAO.saveUser(newUser)) {
-                newUser = UserDAO.loginUser(email, password);
-
                 registrationErrorLabel.setStyle("-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #2a9d8f;"); // green
                 registrationErrorLabel.setText("Registration successful! Redirecting to login...");
                 registrationErrorLabel.setVisible(true);

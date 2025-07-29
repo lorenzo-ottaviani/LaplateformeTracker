@@ -1,5 +1,8 @@
 package tracker.controller;
 
+import java.io.IOException;
+import java.sql.SQLException;
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,11 +11,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
 import tracker.DAO.UserDAO;
 import tracker.model.User;
 
-import java.io.IOException;
-import java.sql.SQLException;
 
 /**
  * Controller responsible for handling user interactions in the login view.
@@ -30,8 +32,8 @@ public class LoginController {
      */
     @FXML
     protected void onLoginButtonClick() {
-        String email = userField.getText();
-        String password = passwordField.getText();
+        String email = userField.getText().trim();
+        String password = passwordField.getText().trim();
 
         try {
             User user = UserDAO.loginUser(email, password);

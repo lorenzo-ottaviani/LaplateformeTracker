@@ -1,5 +1,14 @@
 package tracker.controller;
 
+import java.io.IOException;
+import java.net.URL;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -8,20 +17,20 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Pagination;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import tracker.DAO.StudentDAO;
 import tracker.model.Student;
 
-import java.sql.SQLException;
-import java.io.IOException;
-import java.net.URL;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
 
 /**
  * Controller for displaying and managing students with pagination, edit and delete functionalities.
@@ -64,12 +73,12 @@ public class StudentsDisplayController implements Initializable {
             List<Student> studentList = new ArrayList<>();
             for (Student s : dbStudents) {
                 studentList.add(new Student(
-                        s.firstNameProperty().get(),
-                        s.lastNameProperty().get(),
-                        s.birthDateProperty().get(),
-                        s.studentNumberProperty().get(),
-                        s.educationLevelProperty().get(),
-                        s.averageGradeProperty().get()
+                        s.getFirstName(),
+                        s.getLastName(),
+                        s.getBirthDate(),
+                        s.getStudentNumber(),
+                        s.getEducationLevel(),
+                        s.getAverageGrade()
                 ));
             }
             allStudents = FXCollections.observableArrayList(studentList);
@@ -128,7 +137,7 @@ public class StudentsDisplayController implements Initializable {
         int fromIndex = pageIndex * ROWS_PER_PAGE;
         int toIndex = Math.min(fromIndex + ROWS_PER_PAGE, allStudents.size());
         studentTable.setItems(FXCollections.observableArrayList(allStudents.subList(fromIndex, toIndex)));
-        studentTable.refresh(); // force update of cells, fixes rendering bugs with buttons
+        studentTable.refresh();
         return new Label(""); // Required by Pagination but not displayed
     }
 
