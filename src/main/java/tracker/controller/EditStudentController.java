@@ -1,10 +1,5 @@
 package tracker.controller;
 
-import java.io.IOException;
-import java.sql.SQLException;
-import java.time.LocalDate;
-import java.util.List;
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,35 +9,63 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-
 import tracker.DAO.StudentDAO;
 import tracker.model.Student;
 
-/**
- * Controller responsible for adding a new student.
- * Validates inputs, inserts the student into the database,
- * and manages navigation back to the student display view.
- */
-public class AddStudentController {
+import java.io.IOException;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.List;
 
-    // === FXML UI components ===
+/**
+ * Controller responsible for editing an existing student.
+ * Fields are pre-filled with current student data.
+ * After editing, updates the student in the database.
+ */
+public class EditStudentController {
+
+    // === FXML UI Components ===
     @FXML private TextField firstNameField;
     @FXML private TextField lastNameField;
     @FXML private DatePicker birthDateField;
     @FXML private TextField studentNumberField;
     @FXML private TextField educationLevelField;
     @FXML private TextField averageGradeField;
-    @FXML private Label addErrorLabel;
+    @FXML private Label editErrorLabel;
+
+    // === Data Fields ===
+    private Student studentToEdit;
+
+    // === Data Injection ===
+
+    /**
+     * Injects the student to be edited and pre-fills the form fields.
+     * Called externally by the view loader or controller.
+     *
+     * @param student the student object to edit
+     */
+    public void setStudentToEdit(Student student) {
+        this.studentToEdit = student;
+
+        firstNameField.setText(student.getFirstName());
+        lastNameField.setText(student.getLastName());
+        birthDateField.setValue(student.getBirthDate());
+        studentNumberField.setText(student.getStudentNumber());
+        educationLevelField.setText(student.getEducationLevel());
+        averageGradeField.setText(String.valueOf(student.getAverageGrade()));
+
+        editErrorLabel.setVisible(false);
+    }
 
     // === Event Handlers ===
 
     /**
-     * Called when the "Add Student" button is clicked.
-     * Validates inputs, inserts the student into DB, shows feedback.
+     * Handles the "Save Changes" button click.
+     * Validates the inputs and updates the student in the database.
      */
     @FXML
-    protected void onAddStudentButtonClick() {
-        addErrorLabel.setVisible(false);
+    protected void onSaveButtonClick() {
+        editErrorLabel.setVisible(false);
 
         String firstName = firstNameField.getText().trim();
         String lastName = lastNameField.getText().trim();
@@ -60,17 +83,19 @@ public class AddStudentController {
 
         try {
             double averageGrade = Double.parseDouble(averageGradeText);
-            Student newStudent = new Student(firstName, lastName, birthDate, studentNumber, educationLevel,
-                    averageGrade);
-            StudentDAO.insertStudent(newStudent);
+            String originalStudentNumber = studentToEdit.getStudentNumber();
 
-            showAlert(Alert.AlertType.INFORMATION, "Success", "Student added successfully.");
-            clearForm();
+            Student updatedStudent = new Student(firstName, lastName, birthDate, studentNumber, educationLevel,
+                    averageGrade);
+
+            StudentDAO.updateStudent(originalStudentNumber, updatedStudent);
+
+            showAlert(Alert.AlertType.INFORMATION, "Success", "Student updated successfully.");
 
         } catch (SQLException e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Database Error",
-                    "An error occurred while adding the new student. Please try again.");
+                    "An error occurred while updating the student.");
         }
     }
 
@@ -97,9 +122,9 @@ public class AddStudentController {
     // === Validation Methods ===
 
     /**
-     * Validates all input fields.
+     * Validates all form input fields.
      *
-     * @return null if valid, else the first error message found.
+     * @return null if all inputs are valid; otherwise, returns an error message
      */
     private String validateInputs(String firstName, String lastName, LocalDate birthDate,
                                   String studentNumber, String educationLevel, String averageGradeText) {
@@ -118,7 +143,7 @@ public class AddStudentController {
             double grade = Double.parseDouble(averageGradeText);
             if (grade < 0.0 || grade > 20.0) return "Grade must be between 0 and 20.";
         } catch (NumberFormatException e) {
-            return "Average grade must be a number.";
+            return "Average grade must be a numeric value.";
         }
 
         return null;
@@ -127,16 +152,22 @@ public class AddStudentController {
     // === UI Feedback Methods ===
 
     /**
-     * Shows an error message in the label below the form.
+     * Displays an error message label under the form.
+     *
+     * @param message the error message to show
      */
     private void showError(String message) {
-        addErrorLabel.setText(message);
-        addErrorLabel.setStyle("-fx-text-fill: #e63946; -fx-font-weight: bold;");
-        addErrorLabel.setVisible(true);
+        editErrorLabel.setText(message);
+        editErrorLabel.setStyle("-fx-text-fill: #e63946; -fx-font-weight: bold;");
+        editErrorLabel.setVisible(true);
     }
 
     /**
-     * Shows a JavaFX alert dialog.
+     * Displays a JavaFX alert dialog.
+     *
+     * @param type    the type of alert (e.g. INFORMATION, ERROR)
+     * @param title   the dialog title
+     * @param message the message content
      */
     private void showAlert(Alert.AlertType type, String title, String message) {
         Alert alert = new Alert(type);
@@ -144,18 +175,5 @@ public class AddStudentController {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
-    }
-
-    /**
-     * Clears the form inputs and hides the error label.
-     */
-    private void clearForm() {
-        firstNameField.clear();
-        lastNameField.clear();
-        birthDateField.setValue(null);
-        studentNumberField.clear();
-        educationLevelField.clear();
-        averageGradeField.clear();
-        addErrorLabel.setVisible(false);
     }
 }

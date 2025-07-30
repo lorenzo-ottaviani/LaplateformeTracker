@@ -171,7 +171,7 @@ public class StudentsDisplayController implements Initializable {
                 editButton.setStyle("-fx-background-color: #228B22; -fx-text-fill: white; -fx-background-radius: 8;");
                 editButton.setOnAction(event -> {
                     Student selectedStudent = getTableView().getItems().get(getIndex());
-                    openStudentManagerView(selectedStudent);
+                    openEditStudentView(selectedStudent);
                 });
             }
 
@@ -217,25 +217,25 @@ public class StudentsDisplayController implements Initializable {
 
     // === View opening methods ===
     /**
-     * Opens the Student Manager view to edit the selected student.
+     * Opens the Edit Student view to edit the selected student.
      *
      * @param student the student to edit
      */
-    private void openStudentManagerView(Student student) {
+    private void openEditStudentView(Student student) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tracker/view/student-manager-view.fxml"));
-            Parent root = loader.load();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/tracker/view/edit-student-view.fxml"));
+            Parent editStudentRoot = loader.load();
 
-            StudentManagerController controller = loader.getController();
-            controller.setStudentData(student);
+            EditStudentController controller = loader.getController();
+            controller.setStudentToEdit(student);
 
-            Stage stage = new Stage();
-            stage.setTitle("Manage Student");
-            stage.setScene(new Scene(root, 600, 400));
-            stage.show();
+            Stage stage = (Stage) studentTable.getScene().getWindow();
+            Scene scene = stage.getScene();
+            scene.setRoot(editStudentRoot);
 
         } catch (IOException e) {
             e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Navigation Error", "Failed to load the edit student screen.");
         }
     }
 
@@ -274,11 +274,11 @@ public class StudentsDisplayController implements Initializable {
     protected void onAddButtonClick() {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/tracker/view/add-student-view.fxml"));
-            Parent loginRoot = fxmlLoader.load();
+            Parent addStudentRoot = fxmlLoader.load();
 
             Stage stage = (Stage) studentTable.getScene().getWindow();
             Scene scene = stage.getScene();
-            scene.setRoot(loginRoot);
+            scene.setRoot(addStudentRoot);
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -305,7 +305,7 @@ public class StudentsDisplayController implements Initializable {
             Student student = StudentDAO.findByStudentNumber(studentNumber);
 
             if (student != null) {
-                openStudentManagerView(student);
+                openEditStudentView(student);
             } else {
                 showAlert(Alert.AlertType.WARNING, "Search Failed",
                         "No student found with the given student number.");
