@@ -83,12 +83,12 @@
 
 /* Container around main content */
 .content-container {
-    -fx-padding: 10 20 10 20;
+    -fx-padding: 0 20 5 20;
 }
 
 /* Section title label */
 .section-title {
-    -fx-font-size: 28px;
+    -fx-font-size: 42px;
     -fx-font-weight: bold;
     -fx-text-fill: #0077b6;
 }

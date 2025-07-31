@@ -1,15 +1,35 @@
 package tracker.controller;
 
+import java.io.IOException;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-
 import tracker.model.DatabaseConnection;
 
-public class  TrackerApp extends Application {
+/**
+ * Main application class for the "Track You!" student tracking system.
+ *
+ * This class is responsible for:
+ * <ul>
+ *     <li>Initializing the JavaFX application</li>
+ *     <li>Setting up the initial login screen</li>
+ *     <li>Connecting to the database on startup</li>
+ * </ul>
+ *
+ * Entry point: {@code main(String[] args)}
+ */
+public class TrackerApp extends Application {
+
+    /**
+     * Initializes and displays the primary stage (JavaFX main window).
+     * Loads the login view and applies the CSS stylesheet.
+     *
+     * @param stage the primary stage provided by JavaFX runtime
+     * @throws IOException if the FXML file for the login view cannot be loaded
+     */
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(TrackerApp.class.getResource("/tracker/view/login-view.fxml"));
@@ -21,6 +41,12 @@ public class  TrackerApp extends Application {
         stage.show();
     }
 
+    /**
+     * Main method and entry point of the application.
+     * Initializes the database connection before launching the JavaFX UI.
+     *
+     * @param args command-line arguments (not used)
+     */
     public static void main(String[] args) {
         try {
             DatabaseConnection.initialize();

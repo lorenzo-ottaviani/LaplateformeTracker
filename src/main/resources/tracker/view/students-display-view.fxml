@@ -30,7 +30,9 @@
             <!-- Toolbar -->
             <HBox spacing="10" alignment="CENTER_LEFT">
 
-                <Button text="Add" styleClass="small-button"/>
+                <Button text="Add"
+                        onAction="#onAddButtonClick"
+                        styleClass="small-button"/>
 
                 <Region HBox.hgrow="ALWAYS"/>
 
@@ -40,7 +42,9 @@
                     <TextField fx:id="searchIdField" promptText="8 digits"
                                prefColumnCount="8"
                                styleClass="input-field"/>
-                    <Button text="Search" styleClass="small-button"/>
+                    <Button text="Search"
+                            onAction="#onSearchButtonClick"
+                            styleClass="small-button"/>
                 </HBox>
             </HBox>
 

@@ -1,15 +1,20 @@
 package tracker.DAO;
 
-import tracker.model.DatabaseConnection;
-import tracker.model.User;
-
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+import tracker.model.DatabaseConnection;
+import tracker.model.User;
+
+/**
+ * Data Access Object (DAO) class for managing user-related database operations.
+ * Provides methods to save new users and authenticate existing users.
+ * Passwords are securely hashed using BCrypt before storage.
+ */
 public class UserDAO  {
 
     static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();

@@ -1,17 +1,18 @@
 package tracker.controller;
 
+import java.net.URL;
+import java.sql.SQLException;
+import java.util.ResourceBundle;
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+
 import tracker.DAO.StudentDAO;
 import tracker.model.Student;
-
-import java.net.URL;
-import java.sql.SQLException;
-import java.util.ResourceBundle;
 
 /**
  * Controller class for the delete confirmation dialog.
@@ -19,17 +20,12 @@ import java.util.ResourceBundle;
  */
 public class DeleteConfirmController implements Initializable {
 
-    @FXML
-    private Label studentNameLabel;
-
-    @FXML
-    private Button confirmButton;
-
-    @FXML
-    private Button cancelButton;
-
     private Student student;
     private StudentsDisplayController displayController;
+
+    @FXML private Label studentNameLabel;
+    @FXML private Button confirmButton;
+    @FXML private Button cancelButton;
 
     /**
      * Sets the student to be deleted and the controller that needs to be refreshed after deletion.
@@ -85,6 +81,14 @@ public class DeleteConfirmController implements Initializable {
     }
 
     /**
+     * Closes the current window.
+     */
+    private void closeWindow() {
+        Stage stage = (Stage) confirmButton.getScene().getWindow();
+        stage.close();
+    }
+
+    /**
      * Displays an alert with the specified parameters.
      *
      * @param title the title of the alert
@@ -99,11 +103,4 @@ public class DeleteConfirmController implements Initializable {
         alert.showAndWait();
     }
 
-    /**
-     * Closes the current window.
-     */
-    private void closeWindow() {
-        Stage stage = (Stage) confirmButton.getScene().getWindow();
-        stage.close();
-    }
 }
